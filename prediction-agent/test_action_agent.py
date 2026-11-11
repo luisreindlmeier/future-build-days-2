@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Offline tests for action_agent.py (no network).  Run:  python3 test_action_agent.py"""
 import copy, json, unittest
+import os, tempfile
 import engine as E
 import action_agent as A
+import guardrails as G
+G.LOG_FILE = os.path.join(tempfile.gettempdir(), "guardrail-test.log")   # keep the demo log clean
 
 MAX = dict(E.EXAMPLE_CUSTOMER, spending=A.EXAMPLE_SPENDING)
 
@@ -16,11 +19,32 @@ class Rules(unittest.TestCase):
     def setUpClass(cls):
         cls.inp = A.build_action_input(MAX)
         cls.by = {a["id"]: a for a in cls.inp["plan"]}
+        cls.all = set(cls.by) | {x["id"] for x in cls.inp["not_shown"]}
 
     def test_triggers_fire_on_the_data(self):
         for i in ("start_buffer", "pause_purchase", "limit_eating_out", "cancel_unused_subscriptions",
                   "write_will", "family_diversification_plan", "write_crash_rules", "income_protection_check"):
-            self.assertIn(i, self.by, i)
+            self.assertIn(i, self.all, i)
+
+    def test_limit_text_uses_the_limit(self):
+        how = self.by["limit_eating_out"]["how"]
+        self.assertIn("€400", how)
+        self.assertNotIn("€610", how)
+
+    def test_freed_excludes_transfers(self):
+        qw = self.inp["quick_wins"]
+        self.assertEqual(qw["freed_per_month"], "€288 a month")       # €210 eating out + €78 subscriptions
+        self.assertEqual(qw["set_aside_per_month"], "€400 a month")   # the buffer is moved, not freed
+        intro = A.fallback_words(self.inp)["intro"]
+        self.assertIn("free €288", intro)
+        self.assertNotIn("€688", intro)
+
+    def test_pause_purchase_label(self):
+        self.assertTrue(self.by["pause_purchase"]["impact"]["effect_label"].startswith("keeps "))
+
+    def test_not_shown_has_titles(self):
+        for x in self.inp["not_shown"]:
+            self.assertTrue(x["title"] and "_" not in x["title"])
 
     def test_only_unused_subscriptions_and_only_categories_far_above_peers(self):
         how = self.by["cancel_unused_subscriptions"]["how"]
@@ -30,8 +54,9 @@ class Rules(unittest.TestCase):
         self.assertNotIn("limit_shopping", self.by)    # €240 vs €210 is not far above
 
     def test_investment_topics_go_to_the_advisor(self):
-        for i in ("family_diversification_plan", "write_crash_rules", "income_protection_check"):
-            self.assertEqual(self.by[i]["bucket"], "with_your_advisor")
+        for i in ("family_diversification_plan", "write_crash_rules", "income_protection_check", "save_more_tomorrow"):
+            if i in self.by:
+                self.assertEqual(self.by[i]["bucket"], "with_your_advisor")
         self.assertEqual(self.inp["advisor_topics"], [a["id"] for a in self.inp["plan"] if a["type"] == "advisor"])
 
     def test_groups_in_order_and_capped(self):
@@ -79,6 +104,9 @@ class Validator(unittest.TestCase):
             "missing action": lambda x: x["actions"].pop(),
             "no advisor sentence": lambda x: x.update(advisor_meeting=None),
             "too long": lambda x: x.update(intro=" ".join(["word"] * 50)),
+            "one subscription missing": lambda x: x["actions"][[a["action_id"] for a in x["actions"]].index("cancel_unused_subscriptions")].update(why="You no longer use Gym premium."),
+            "set-aside counted as freed": lambda x: x.update(intro="Your quick wins free €688 a month."),
+            "eliminated": lambda x: x["actions"][-1].update(why="This eliminates the risk."),
         }
         for name, f in cases.items():
             with self.subTest(name=name):

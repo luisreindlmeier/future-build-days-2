@@ -22,6 +22,21 @@ Tells one customer what can happen if they keep their habits and what can happen
 | `eval_agent.py`, `eval_cases.json` | Live model evaluation on 8 synthetic customers |
 | `example_input.json` | Example agent input produced by the engine |
 
+## Guardrails (v2.2)
+- `guardrails.py` checks every AI text field before it is shown: each EUR amount (by value, so €1.07m = €1,070k), %, point difference, duration and plain number must appear in the facts for that part of the answer (customer + same habits + the scenario or action the field is about); no forbidden wording (eliminated/removed/gone only for a risk at 0% and with "in the simulation"; no guaranteed, safe, certain, peace of mind, legacy, Start today ...); no raw ids; no buy/sell instructions.
+- On a violation the model gets one retry with the list of violations. If it fails again, only the failing fields are replaced by rule-based text (`source: ai_partial`); the record is in `validation` and shown under "Raw agent output" in the playground. Every event is logged to the console and `guardrail.log`.
+- Facts are noise-filtered: differences under 2 points (2,000 paths, common random numbers across scenarios) are "no clear change". Each scenario has `risks_remaining` (removed / reduced / unchanged / increased); every life fact and impact carries a `scenario_id`.
+- Action agent: "freed" money (spending cuts, cancellations) is kept apart from "set aside" money (buffer, investment plan).
+- Engine 1.1: the buffer stops at 3 months of spending (`buffer_months`), then the monthly amount goes to investments; panic sellers stay in cash for 2 years and miss a modelled rebound (`panic_out_years`, `rebound`; see the comments in `ASSUMPTIONS`); intake plausibility warnings (`intake_warnings`). `LEGACY_ASSUMPTIONS` reproduces the demo engine for the parity test.
+- `test_all_customers.py` runs every sample customer through rules-only and live AI and asserts no raw ids, no forbidden words, traceable numbers and correct freed money (`SKIP_AI=1` for offline).
+
+## Human impact (v2.1)
+Both agents now write for one person and show what the money means in their life, while every figure stays verified:
+- **Life facts are computed by the rules, not the AI**: "your cash would cover 1.1 months of your bills", "€154k more at 41, which is 4.6 years of your current spending", "€4,800 a year, €72k set aside over 15 years", "€24k by your home goal in 5 years".
+- **The Prediction agent adds two "future you" scenes** (same habits vs. with changes) and "what it means" sentences; the **Action agent** turns each step into a concrete life image linked to the person's purpose.
+- The prompts give the model a creative brief (profile, purpose, varied language, temperature 0.6), with hard limits: no invented figures or durations, no invented family or life events, no outcome stated as certain ("within reach", never "you own a home"). The validator checks figures, durations and certainty phrases; on failure the model is asked to repair once, then the fallback text is used.
+- Engine intake supports `profile` (heir / founder / pro), `purpose`, `horizon_years`, a `home` goal and income-scaled saving steps; a customer who spends more than they earn gets "Spend no more than you earn" first.
+
 ## Action agent
 Turns the customer's data into a plan in three groups: **this week** (quick wins you can do alone: start a buffer, cancel unused subscriptions, set a limit for a category far above people like you, put a big purchase on hold), **this month** (will), and **with your advisor** (diversification plan, investment plan, crash rules, income protection), bundled into one meeting.
 Rules decide which actions apply, their order, titles, steps, verification and effect on the main goal (re-simulated by the engine). The AI writes only the intro, one personal "why" per action and the meeting sentence. It never gives buy/sell instructions for securities or names products: investment topics always go to the advisor.

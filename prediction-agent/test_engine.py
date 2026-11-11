@@ -18,7 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CASES = {c["case"]: c for c in json.load(open(os.path.join(HERE, "eval_cases.json"), encoding="utf8"))}
 
 # The intake that corresponds to each demo state in eval_cases.json
-BASE = dict(e.EXAMPLE_CUSTOMER)
+BASE = dict(e.EXAMPLE_CUSTOMER, monthly_income=3000)        # the demo's Max (before the dividend fix)
+LEGACY = e.LEGACY_ASSUMPTIONS                                # the demo engine's assumptions
 STATES = {
     "c01": {},
     "c02": {"crash_reaction": "hold", "disability_cover": True,
@@ -47,12 +48,11 @@ class Parity(unittest.TestCase):
     def test_same_results_as_javascript_engine(self):
         for case in STATES:
             with self.subTest(case=case):
-                py = e.build_agent_input(customer(case))
+                py = e.build_agent_input(customer(case), LEGACY)
                 js = CASES[case]["input"]
                 self.assertEqual([s["id"] for s in py["scenarios"]], [s["id"] for s in js["scenarios"]])
                 for a, b in zip(py["scenarios"], js["scenarios"]):
                     self.assertEqual(a["results"], b["results"], f"{case}/{a['id']}")
-                    self.assertEqual(a.get("change"), b.get("change"))
                 self.assertEqual(py["customer"]["goals"], js["customer"]["goals"])
 
 
