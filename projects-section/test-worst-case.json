@@ -1,0 +1,11 @@
+{
+  "name": "Sam",
+  "age": 22,
+  "monthly_income": 10000,
+  "monthly_spending": 80,
+  "savings": 20,
+  "inheritance": {
+    "received": false,
+    "amount": 0
+  }
+}

@@ -1,0 +1,146 @@
+Here is the assessment for Max as JSON. It uses the figures from the last finished run, before the current fixes: Max's income is still €3,000 and the old panic-sale model is used. The structure matches the agents' contracts: intake → engine scenarios → Prediction agent output → Action agent output.
+
+```json
+{
+  "intake": {
+    "name": "Customer",
+    "age": 26,
+    "profile": "heir",
+    "purpose": "Freedom",
+    "wealth_total": 490000,
+    "cash": 3100,
+    "company_share": 0.82,
+    "monthly_income": 3000,
+    "monthly_spending": 2820,
+    "monthly_saving_cash": 180,
+    "monthly_saving_invested": 0,
+    "crash_reaction": "sell",
+    "disability_cover": false,
+    "will": false,
+    "has_buffer_plan": false,
+    "has_diversification_plan": false,
+    "buffer_amount": 400,
+    "invest_amount": 150,
+    "horizon_years": 15,
+    "goals": [{ "type": "wealth", "target": 1000000, "priority": 1 }],
+    "spending": {
+      "subscriptions": [
+        { "name": "Gym premium", "monthly": 59, "last_used_days": 74 },
+        { "name": "Streaming bundle", "monthly": 28, "last_used_days": 2 },
+        { "name": "Car-sharing plus", "monthly": 19, "last_used_days": 121 }
+      ],
+      "categories": [
+        { "id": "eating_out", "label": "Eating out and delivery", "monthly": 610, "peer_median": 320 }
+      ],
+      "planned_purchases": [{ "label": "New car", "amount": 38000, "in_months": 6 }]
+    }
+  },
+
+  "engine": {
+    "paths": 2000,
+    "horizon": "15 years",
+    "main_goal": "Build €1m of wealth by age 41",
+    "scenarios": [
+      { "id": "baseline",  "label": "Same habits",                         "range": "€294k – €2.90m", "middle": "€763k", "goal_success": "40%", "risk_below_today": "28%",
+        "events": { "company_shock": "45% (hit 36%)", "panic_sale": "71%", "income_gap": "5%" } },
+      { "id": "buffer",    "label": "Save €400 a month into a buffer",     "range": "€373k – €3.01m", "middle": "€873k", "goal_success": "44%", "risk_below_today": "19%" },
+      { "id": "invest",    "label": "Invest €150 a month",                 "range": "€325k – €2.93m", "middle": "€804k", "goal_success": "41%", "risk_below_today": "25%" },
+      { "id": "hold_rule", "label": "Hold by written rule in a crash",     "range": "€308k – €2.94m", "middle": "€775k", "goal_success": "40%", "risk_below_today": "27%",
+        "events": { "panic_sale": "0%" } },
+      { "id": "diversify", "label": "Diversify the family company shares", "range": "€382k – €2.62m", "middle": "€917k", "goal_success": "45%", "risk_below_today": "18%",
+        "events": { "company_shock": "45% (hit 26%)" } },
+      { "id": "cover",     "label": "Get disability cover",                "range": "€295k – €2.91m", "middle": "€767k", "goal_success": "40%", "risk_below_today": "28%",
+        "events": { "income_gap": "0%" } },
+      { "id": "full_plan", "label": "Do all of the above",                 "range": "€506k – €2.87m", "middle": "€1.09m", "goal_success": "55%", "risk_below_today": "9%",
+        "events": { "company_shock": "45% (hit 25%)", "panic_sale": "0%", "income_gap": "0%" } }
+    ]
+  },
+
+  "prediction_agent": {
+    "source": "ai",
+    "headline": "Building €1m by age 41 has a 40% chance if you keep your current habits.",
+    "if_nothing_changes": "Your wealth can range from €294k to €2.90m. There is a 28% chance you end below today's level.",
+    "future_selves": {
+      "same_habits": "At 41, a market fall could lead you to sell and miss the rebound, which has a 71% chance with your current habits.",
+      "with_changes": "With all changes, your wealth could be around €1.09m in a middle future, and a bad year hits less hard."
+    },
+    "what_it_means": [
+      "If your income stopped tomorrow, your cash would cover 1.1 months of your bills.",
+      "In a middle future, diversifying leaves you about €154k more at 41, which is 4.6 years of your current spending.",
+      "In a bad future, all changes together protect about €212k, or 6.3 years of your current spending."
+    ],
+    "best_change": {
+      "scenario_id": "diversify",
+      "why": "82% of your wealth is in one company. Lowering it to 60% raises your goal chance by 5 points and cuts a company shock's hit from 36% to 26%.",
+      "first_step": "Book the family-table session with your advisor and your parents to agree a step-by-step plan."
+    },
+    "goals": [
+      { "goal_id": "g1", "best_scenario_id": "diversify", "sentence": "Your chance is 40% today and 45% if you diversify the family company shares." }
+    ],
+    "watch_out": {
+      "event_id": "panic_sale",
+      "helped_by": "hold_rule",
+      "sentence": "A panic sale has a 71% chance with your current habits. Holding by a written rule takes it to 0% in the simulation."
+    },
+    "trade_off": "Diversifying lowers the very best futures compared with keeping 82% in one company.",
+    "comparison": [
+      { "scenario_id": "buffer",    "what_happens": "Saving €400 a month raises your goal chance by 4 points and lowers the chance of ending below today by 9 points." },
+      { "scenario_id": "invest",    "what_happens": "Investing €150 a month gives a small 1 point gain." },
+      { "scenario_id": "hold_rule", "what_happens": "Holding by rule does not clearly change your goal chance, but takes the panic-sale risk from 71% to 0% in the simulation." },
+      { "scenario_id": "diversify", "what_happens": "Diversifying raises your goal chance by 5 points and lowers the chance of ending below today by 10 points." },
+      { "scenario_id": "cover",     "what_happens": "Disability cover does not change your goal chance but protects your bills in a year without income." },
+      { "scenario_id": "full_plan", "what_happens": "All changes together raise your goal chance by 15 points and lower the chance of ending below today by 19 points." }
+    ],
+    "disclaimer": "Simulated range on stated assumptions, not a promise."
+  },
+
+  "action_agent": {
+    "source": "ai",
+    "intro": "Your goal is €1m by 41, with a 40% chance today. The quick wins free €288 a month and set aside €400.",
+    "actions": [
+      { "action_id": "start_buffer", "bucket": "this_week", "title": "Start a buffer: €400 a month", "effect": "goal +4 points",
+        "why": "Your cash covers 1.1 months of bills. A €400 standing order builds a buffer first, then the money moves on to investments.",
+        "how": "Confirm the prepared standing order: €400 on the 1st of each month into a new emergency pot.",
+        "verified_by": "Bank data: the standing order ran" },
+      { "action_id": "pause_purchase", "bucket": "this_week", "title": "Put the new car on hold", "effect": "keeps 4 points",
+        "why": "Buying the €38,000 car now would lower your goal chance to 36%. Pausing it keeps 40%.",
+        "how": "Wait until your buffer covers 3 months of spending, and talk it through with your advisor before signing a loan.",
+        "verified_by": "Bank data: no loan contract and a buffer above 3 months" },
+      { "action_id": "limit_eating_out", "bucket": "this_week", "title": "Set a €400 monthly limit for eating out and delivery", "effect": "goal +2 points",
+        "why": "You spend €610 a month, people like you about €320. A €400 limit frees €210 a month.",
+        "how": "Set the limit in the app. Anything you don't spend under your €400 limit moves into your savings.",
+        "verified_by": "Bank data: two months at or below the limit" },
+      { "action_id": "cancel_unused_subscriptions", "bucket": "this_week", "title": "Cancel what you no longer use (€78 a month)", "effect": "protects",
+        "why": "Gym premium (74 days unused) and Car-sharing plus (121 days unused) cost €78 a month together.",
+        "how": "Cancel Gym premium and Car-sharing plus in the app's subscription view.",
+        "verified_by": "Bank data: the payments stop" },
+      { "action_id": "write_will", "bucket": "this_month", "title": "Write your will with the guided checklist", "effect": "protects",
+        "why": "Without a will, €402k of family company shares would pass on without your direction.",
+        "how": "Answer the 12-question checklist in the app, then book a notary and upload the signed will.",
+        "verified_by": "Document: signed will uploaded" },
+      { "action_id": "family_diversification_plan", "bucket": "with_your_advisor", "title": "Agree a step-by-step plan to lower your single-company share", "effect": "goal +5 points",
+        "why": "82% of your wealth is in one company. A plan to lower it raises your chance by 5 points.",
+        "how": "Book the family-table session with your advisor and your parents to agree a step-by-step plan.",
+        "verified_by": "Advisor confirmed: plan agreed and first step taken" },
+      { "action_id": "write_crash_rules", "bucket": "with_your_advisor", "title": "Write down your rules for falling markets", "effect": "protects",
+        "why": "You sold everything in the crash test. Written rules take the panic-sale risk from 71% to 0% in the simulation.",
+        "how": "Write down your rules for a falling market with your advisor, then practise them in the crash review.",
+        "verified_by": "Advisor confirmed, then passed again in the crash review" },
+      { "action_id": "income_protection_check", "bucket": "with_your_advisor", "title": "Check your income protection", "effect": "protects",
+        "why": "You have no disability cover. Cover takes the income-gap risk from 5% to 0% in the simulation.",
+        "how": "Book the 15-minute income protection check with a specialist.",
+        "verified_by": "Advisor confirmed: cover in place" }
+    ],
+    "advisor_meeting": {
+      "topics": ["family_diversification_plan", "write_crash_rules", "income_protection_check"],
+      "sentence": "One meeting with your advisor covers your diversification plan, your crash rules and your income protection."
+    },
+    "disclaimer": "Educational guidance, not investment advice. Decisions about investments are made with your advisor after a suitability check."
+  }
+}
+```
+
+Three caveats:
+- **The agent texts are representative, not one exact run.** They follow the corrected rules: "€288 freed + €400 set aside", "keeps 4 points", both subscriptions named, and "0% in the simulation".
+- **The AI wording varies slightly from run to run.** The numbers are fixed by the engine.
+- **The fixes still in progress move a few numbers.** Max's €3,400 income with dividends, the 3-month buffer cap and the new panic model change some figures, for example the same-habits middle becomes about €778k and the panic cost about €23k. To see the current exact output, run `python3 engine.py` or use "Raw agent output" in the playground.

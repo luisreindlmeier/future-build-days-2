@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kairos · Your projects</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="row" style="align-items:center">
+    <div>
+      <h1>Your projects</h1>
+      <p class="sub">Kairos judges each plan with your scan, your wealth and today's market.</p>
+    </div>
+    <span class="vital" id="scanChip" style="align-self:center">Scan: …</span>
+  </div>
+
+  <!-- Scan summary, foundation gate -->
+  <div class="card">
+    <div class="stats" id="statRow"></div>
+    <div class="vitals" id="vitalRow"></div>
+    <div class="gate" id="gateNote" hidden></div>
+  </div>
+
+  <!-- Project cards -->
+  <div id="projects"></div>
+
+  <!-- Add a project -->
+  <button class="add-btn" id="addBtn" type="button">＋ Add a project</button>
+  <div class="card" id="chooserCard" style="padding-top:14px" hidden>
+    <div class="chooser" id="chooser"></div>
+  </div>
+
+  <!-- Portfolio -->
+  <div class="card insight">
+    <h2>Portfolio view</h2>
+    <div id="portfolio" style="margin-top:8px"></div>
+  </div>
+
+  <!-- Advisor -->
+  <button class="adv-btn" id="advToggle" type="button">For your advisor · show the numbers</button>
+  <div class="card adv" id="advPanel" hidden>
+    <h2>Advisor view</h2>
+    <p class="sub" style="margin:4px 0 10px">Where the client's savings go, split by the plans they added — and the quarter each financing turns healthy.</p>
+    <div id="advBody"></div>
+  </div>
+
+  <p class="foot">Concept prototype · educational illustration, not financial advice · market data as of Nov 2026 (demo values)</p>
+</div>
+
+<script src="js/secrets.js"></script>  <!-- your AI key, local only (see js/secrets.example.js) -->
+<script src="js/config.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/customer.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
