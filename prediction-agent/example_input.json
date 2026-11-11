@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "customer": {
+    "name": "Max",
+    "age": 26,
+    "profile": "heir",
+    "habits": {
+      "monthly_saving": 180,
+      "crash_reaction": "sold everything after 2.3 seconds",
+      "single_company_share": "82%",
+      "disability_cover": false,
+      "will": false,
+      "knowledge_confidence_gap": "confident but wrong on diversification"
+    },
+    "goals": [
+      {
+        "id": "g1",
+        "label": "Build €1m of wealth by age 41",
+        "target": "€1m",
+        "horizon_years": 15,
+        "priority": 1
+      }
+    ]
+  },
+  "horizon_years": 15,
+  "paths": 2000,
+  "seed": 260841,
+  "wealth_now": "€490k",
+  "scenarios": [
+    {
+      "id": "baseline",
+      "label": "Same habits",
+      "change": null,
+      "kind": "baseline",
+      "results": {
+        "range": "€294k – €2.90m",
+        "middle": "€763k",
+        "weak_future": "€294k",
+        "risk_below_today": "28%",
+        "goal_success": {
+          "g1": "40%"
+        }
+      }
+    },
+    {
+      "id": "buffer",
+      "label": "Save €400 a month into a buffer",
+      "change": "Standing order of €400 a month into an emergency pot",
+      "kind": "change",
+      "results": {
+        "range": "€373k – €3.01m",
+        "middle": "€873k",
+        "weak_future": "€373k",
+        "risk_below_today": "19%",
+        "goal_success": {
+          "g1": "44%"
+        }
+      }
+    },
+    {
+      "id": "invest",
+      "label": "Invest €150 a month",
+      "change": "Half of each future raise goes into a monthly investment plan, about €150 a month",
+      "kind": "change",
+      "results": {
+        "range": "€325k – €2.93m",
+        "middle": "€804k",
+        "weak_future": "€325k",
+        "risk_below_today": "25%",
+        "goal_success": {
+          "g1": "41%"
+        }
+      }
+    },
+    {
+      "id": "hold_rule",
+      "label": "Hold by written rule in a crash",
+      "change": "Follow written rules in a market fall instead of selling",
+      "kind": "change",
+      "results": {
+        "range": "€308k – €2.94m",
+        "middle": "€775k",
+        "weak_future": "€308k",
+        "risk_below_today": "27%",
+        "goal_success": {
+          "g1": "40%"
+        }
+      }
+    },
+    {
+      "id": "diversify",
+      "label": "Diversify the family company shares",
+      "change": "Reduce the single-company share from 82% to 60% over several years",
+      "kind": "change",
+      "results": {
+        "range": "€382k – €2.62m",
+        "middle": "€917k",
+        "weak_future": "€382k",
+        "risk_below_today": "18%",
+        "goal_success": {
+          "g1": "45%"
+        }
+      }
+    },
+    {
+      "id": "cover",
+      "label": "Get disability cover",
+      "change": "Put income-protection cover in place",
+      "kind": "change",
+      "results": {
+        "range": "€295k – €2.91m",
+        "middle": "€767k",
+        "weak_future": "€295k",
+        "risk_below_today": "28%",
+        "goal_success": {
+          "g1": "40%"
+        }
+      }
+    },
+    {
+      "id": "full_plan",
+      "label": "Do all of the above",
+      "change": "All five changes together",
+      "kind": "combo",
+      "results": {
+        "range": "€506k – €2.87m",
+        "middle": "€1.09m",
+        "weak_future": "€506k",
+        "risk_below_today": "9%",
+        "goal_success": {
+          "g1": "55%"
+        }
+      }
+    }
+  ]
+}
