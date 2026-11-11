@@ -1,16 +1,16 @@
 {
   "schema_version": 2,
   "customer": {
-    "name": "Max",
+    "name": "Customer",
     "age": 26,
     "profile": "heir",
     "habits": {
-      "monthly_saving": 180,
-      "crash_reaction": "sold everything after 2.3 seconds",
+      "monthly_saving": "€180",
+      "crash_reaction": "sold everything in the crash test",
       "single_company_share": "82%",
-      "disability_cover": false,
-      "will": false,
-      "knowledge_confidence_gap": "confident but wrong on diversification"
+      "disability_cover": "no",
+      "will": "no",
+      "savings_rate": "6% of income"
     },
     "goals": [
       {
@@ -39,13 +39,32 @@
         "risk_below_today": "28%",
         "goal_success": {
           "g1": "40%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "36% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "71%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "5%"
+          }
+        ]
       }
     },
     {
       "id": "buffer",
       "label": "Save €400 a month into a buffer",
       "change": "Standing order of €400 a month into an emergency pot",
+      "first_step": "Confirm the prepared standing order: €400 on the 1st of each month into a new emergency pot.",
       "kind": "change",
       "results": {
         "range": "€373k – €3.01m",
@@ -54,13 +73,32 @@
         "risk_below_today": "19%",
         "goal_success": {
           "g1": "44%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "35% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "71%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "5%"
+          }
+        ]
       }
     },
     {
       "id": "invest",
       "label": "Invest €150 a month",
       "change": "Half of each future raise goes into a monthly investment plan, about €150 a month",
+      "first_step": "Confirm the save-more-tomorrow commitment: half of your next raise goes into your monthly investment plan.",
       "kind": "change",
       "results": {
         "range": "€325k – €2.93m",
@@ -69,13 +107,32 @@
         "risk_below_today": "25%",
         "goal_success": {
           "g1": "41%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "36% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "71%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "5%"
+          }
+        ]
       }
     },
     {
       "id": "hold_rule",
       "label": "Hold by written rule in a crash",
       "change": "Follow written rules in a market fall instead of selling",
+      "first_step": "Write down your rules for a falling market with your advisor, then practise them in the crash review.",
       "kind": "change",
       "results": {
         "range": "€308k – €2.94m",
@@ -84,13 +141,32 @@
         "risk_below_today": "27%",
         "goal_success": {
           "g1": "40%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "36% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "0%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "5%"
+          }
+        ]
       }
     },
     {
       "id": "diversify",
       "label": "Diversify the family company shares",
       "change": "Reduce the single-company share from 82% to 60% over several years",
+      "first_step": "Book the family-table session with your advisor and your parents to agree a step-by-step plan.",
       "kind": "change",
       "results": {
         "range": "€382k – €2.62m",
@@ -99,13 +175,32 @@
         "risk_below_today": "18%",
         "goal_success": {
           "g1": "45%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "26% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "71%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "5%"
+          }
+        ]
       }
     },
     {
       "id": "cover",
       "label": "Get disability cover",
       "change": "Put income-protection cover in place",
+      "first_step": "Book the 15-minute income protection check with a specialist.",
       "kind": "change",
       "results": {
         "range": "€295k – €2.91m",
@@ -114,13 +209,31 @@
         "risk_below_today": "28%",
         "goal_success": {
           "g1": "40%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "36% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "71%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "0%"
+          }
+        ]
       }
     },
     {
       "id": "full_plan",
       "label": "Do all of the above",
-      "change": "All five changes together",
+      "change": "All 5 changes together",
       "kind": "combo",
       "results": {
         "range": "€506k – €2.87m",
@@ -129,7 +242,25 @@
         "risk_below_today": "9%",
         "goal_success": {
           "g1": "55%"
-        }
+        },
+        "events": [
+          {
+            "id": "company_shock",
+            "label": "The family company loses 40% or more in a single year",
+            "chance": "45%",
+            "typical_hit": "25% of your total wealth in that year"
+          },
+          {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "chance": "0%"
+          },
+          {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "chance": "0%"
+          }
+        ]
       }
     }
   ]
