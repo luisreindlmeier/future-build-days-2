@@ -11,6 +11,35 @@ Tells one customer what can happen if they keep their habits and what can happen
 - **comparison**: one sentence per scenario.
 - **disclaimer**: fixed sentence.
 
+## Files
+| File | What it is |
+|---|---|
+| `engine.py` | Simulation engine: customer intake -> agent input (seeded Monte Carlo, 2,000 futures, 15 years) |
+| `prediction_agent.py` | The agent: rules, AI wording, validator, fallback |
+| `action_agent.py` | Action agent: ranked action plan (spending, saving, advisor topics, will) with engine-computed impact |
+| `test_action_agent.py` | Action agent tests: triggers, grouping, advisor routing, validator (no network) |
+| `test_engine.py` | Engine tests, incl. exact parity with the demo's JavaScript engine (no network) |
+| `eval_agent.py`, `eval_cases.json` | Live model evaluation on 8 synthetic customers |
+| `example_input.json` | Example agent input produced by the engine |
+
+## Action agent
+Turns the customer's data into a plan in three groups: **this week** (quick wins you can do alone: start a buffer, cancel unused subscriptions, set a limit for a category far above people like you, put a big purchase on hold), **this month** (will), and **with your advisor** (diversification plan, investment plan, crash rules, income protection), bundled into one meeting.
+Rules decide which actions apply, their order, titles, steps, verification and effect on the main goal (re-simulated by the engine). The AI writes only the intro, one personal "why" per action and the meeting sentence. It never gives buy/sell instructions for securities or names products: investment topics always go to the advisor.
+```python
+from engine import EXAMPLE_CUSTOMER
+from action_agent import build_action_input, recommend, EXAMPLE_SPENDING
+plan = recommend(build_action_input(dict(EXAMPLE_CUSTOMER, spending=EXAMPLE_SPENDING)))
+```
+The spending intake (subscriptions with last use, categories with a peer median, planned purchases) is documented at the top of `action_agent.py`. Live test 11 Nov 2026, 3 customers x 3 runs: Mistral Medium 9/9 first try (11 s), Qwen 27B 9/9 (6 s).
+
+## Full pipeline
+```python
+from engine import build_agent_input, EXAMPLE_CUSTOMER
+from prediction_agent import predict
+res = predict(build_agent_input(EXAMPLE_CUSTOMER))   # intake -> engine (~1 s) -> agent (~10-25 s)
+```
+The intake format is `EXAMPLE_CUSTOMER` at the top of `engine.py`. The engine's `ASSUMPTIONS` (returns, volatility, chance of income loss) are illustrative demo values: replace them with the bank's own figures before production use.
+
 ## Use it
 ```python
 from prediction_agent import predict
