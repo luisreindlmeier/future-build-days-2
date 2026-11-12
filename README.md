@@ -3,6 +3,8 @@
 - `backend/`: Java 21 / Spring Boot API (tree, scanner, progress, learning) and the Python bridge.
 - `prediction-agent/`: Python simulation engine, prediction and action agents, guardrails.
 - `projects-section/`: the customer dashboard (static site).
+- `ios/`: the iPhone app and the branch terminal on iPad (SwiftUI). See [ios/README.md](ios/README.md).
+- `media/`: App Store pictures, a demo film and pictures of the terminal in a branch. See [media/README.md](media/README.md).
 
 ## Run it
 
