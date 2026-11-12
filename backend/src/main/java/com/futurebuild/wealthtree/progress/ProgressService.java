@@ -15,6 +15,7 @@ import com.futurebuild.wealthtree.model.Transaction;
 import com.futurebuild.wealthtree.model.UserData;
 import com.futurebuild.wealthtree.model.UserProfile;
 import com.futurebuild.wealthtree.recommendation.Action;
+import com.futurebuild.wealthtree.recommendation.AgentActionMapping;
 import com.futurebuild.wealthtree.recommendation.ActionType;
 import com.futurebuild.wealthtree.recommendation.Recommendation;
 import com.futurebuild.wealthtree.scanner.ScannerAnswers;
@@ -91,11 +92,18 @@ public class ProgressService {
         return new History(id, List.copyOf(p.history), List.copyOf(p.actions), List.copyOf(p.milestones));
     }
 
+    /** The frontend joins these entries to the agent plan by action_id. */
+    public synchronized Map<String, AgentActionMapping.Mapping> actionMappings(String id) {
+        ensure(id);
+        return AgentActionMapping.describe(service.recommendations(id));
+    }
+
     // ------------------------------------------------------------------ commands
     public synchronized ProgressSummary commit(String id, String actionOrRecId) {
         UserProgress p = ensure(id);
+        String canonicalId = AgentActionMapping.canonicalId(actionOrRecId);
         Recommendation r = service.recommendations(id).stream()
-                .filter(x -> x.action().id().equals(actionOrRecId) || x.id().equals(actionOrRecId)).findFirst()
+                .filter(x -> x.action().id().equals(canonicalId) || x.id().equals(actionOrRecId)).findFirst()
                 .orElseThrow(() -> new NoSuchElementException("No such recommended action: " + actionOrRecId));
         Action a = r.action();
         TrackedAction existing = p.actions.stream().filter(t -> t.actionId().equals(a.id()) && t.active()).findFirst().orElse(null);
@@ -112,7 +120,8 @@ public class ProgressService {
 
     public synchronized ProgressSummary drop(String id, String actionId) {
         UserProgress p = ensure(id);
-        p.actions.replaceAll(a -> a.actionId().equals(actionId) && a.active() ? a.withStatus(ActionStatus.DROPPED) : a);
+        String canonicalId = AgentActionMapping.canonicalId(actionId);
+        p.actions.replaceAll(a -> a.actionId().equals(canonicalId) && a.active() ? a.withStatus(ActionStatus.DROPPED) : a);
         persist();
         return summary(id);
     }
@@ -129,6 +138,12 @@ public class ProgressService {
         progress.clear();
         repo.reset();
         store.clear();
+    }
+
+    /** Start this customer's memory over (their profile was personalised or deleted). */
+    public synchronized void forget(String id) {
+        progress.remove(id);
+        persist();
     }
 
     // ------------------------------------------------------------------ one month

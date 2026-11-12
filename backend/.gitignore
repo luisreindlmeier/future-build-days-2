@@ -3,4 +3,9 @@ target/
 *.iml
 .vscode/
 .DS_Store
-data/
+/data/
+
+.env
+.env.*
+!.env.example
+__pycache__/

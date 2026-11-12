@@ -1,5 +1,8 @@
 # Wealth Tree – backend (Spring Boot)
 
+**Connected setup and UI contract:** [docs/CONNECTED_API.md](docs/CONNECTED_API.md).
+Use this setup for the single server-side OpenAI key and project planning endpoint.
+
 Backend for the **Wealth Tree**: it turns a user's financial data and personal context into
 an assessment, recommendations (linked to bank products and learning modules), a prediction,
 and one `TreeState` JSON that the 2.5D frontend renders. No auth, no database: three demo personas
@@ -119,8 +122,8 @@ curl -X POST localhost:8080/api/users/maya/simulate -H 'Content-Type: applicatio
 ### Run it (3 terminals)
 
 ```bash
-# 1. the team's agents (Python 3.9+); the key stays in prediction-agent/.env
-python backend/tools/kairos_server.py --agent-dir prediction-agent      # http://localhost:8090
+# 1. the team's agents (Python 3.9+); the key stays in backend/.env (OPENAI_API_KEY)
+python backend/tools/kairos_server.py --agent-dir prediction-agent --projects-dir projects-section      # http://localhost:8090
 # 2. this backend
 cd backend && mvn spring-boot:run                                         # http://localhost:8080
 # 3. projects section (VS Code Live Server or python -m http.server in projects-section), then open:
