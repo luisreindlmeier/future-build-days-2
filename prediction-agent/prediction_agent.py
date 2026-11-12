@@ -574,22 +574,55 @@ def fallback(data, derived=None):
 
 
 # ----------------------------------------------------------------------------- model call
-def _call_model(cfg, user_message, system_prompt=None, temperature=0.6):
-    """One chat call to the gateway. Thread-safe: the prompt is passed in, never swapped globally."""
-    payload = {
-        "model": cfg["model"], "temperature": temperature, "max_tokens": 1800,
-        "messages": [{"role": "system", "content": system_prompt or SYSTEM_PROMPT},
-                     {"role": "user", "content": user_message}],
-    }
-    headers = {"Authorization": "Bearer " + cfg["key"], "Content-Type": "application/json"}
-    if re.search(r"qwen|gemma", cfg["model"], re.I):          # switch visible thinking off (see model handbook)
-        payload["chat_template_kwargs"] = {"enable_thinking": False}
-        headers["x-bf-passthrough-extra-params"] = "true"
+def _is_openai(cfg):
+    return "api.openai.com" in cfg["base"]
+
+
+def _post(cfg, payload, headers):
     req = urllib.request.Request(cfg["base"] + "/chat/completions", json.dumps(payload).encode(), headers)
     with urllib.request.urlopen(req, timeout=cfg["timeout"]) as r:
         if "json" not in (r.headers.get("Content-Type") or ""):
             raise RuntimeError("gateway returned non-JSON content")
-        return json.load(r)["choices"][0]["message"]["content"]
+        data = json.load(r)
+    content = data["choices"][0]["message"].get("content")
+    if not content:      # e.g. an OpenAI reasoning model used the whole token budget for thinking
+        raise RuntimeError("empty answer (finish_reason: %s)" % data["choices"][0].get("finish_reason"))
+    return content
+
+
+def _call_model(cfg, user_message, system_prompt=None, temperature=0.6):
+    """One chat call to the gateway. Thread-safe: the prompt is passed in, never swapped globally.
+    Works with the hIP gateway (default) and with OpenAI (HIP_BASE_URL=https://api.openai.com/v1)."""
+    messages = [{"role": "system", "content": system_prompt or SYSTEM_PROMPT},
+                {"role": "user", "content": user_message}]
+    headers = {"Authorization": "Bearer " + cfg["key"], "Content-Type": "application/json"}
+    if _is_openai(cfg):
+        # OpenAI: max_completion_tokens instead of max_tokens. Reasoning models (gpt-5 family, o-series) accept no
+        # custom temperature and spend part of the budget on hidden reasoning, so the budget is larger and the
+        # reasoning effort low (HIP_REASONING_EFFORT, HIP_MAX_TOKENS in .env to tune).
+        payload = {"model": cfg["model"], "messages": messages,
+                   "max_completion_tokens": int(os.environ.get("HIP_MAX_TOKENS", "6000"))}
+        reasoning = bool(re.match(r"(gpt-5|o\d)", cfg["model"], re.I))
+        if reasoning:
+            effort = os.environ.get("HIP_REASONING_EFFORT", "low")
+            if effort:
+                payload["reasoning_effort"] = effort
+        else:
+            payload["temperature"] = temperature
+    else:
+        payload = {"model": cfg["model"], "temperature": temperature, "max_tokens": 1800, "messages": messages}
+        if re.search(r"qwen|gemma", cfg["model"], re.I):          # switch visible thinking off (see model handbook)
+            payload["chat_template_kwargs"] = {"enable_thinking": False}
+            headers["x-bf-passthrough-extra-params"] = "true"
+    try:
+        return _post(cfg, payload, headers)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf8", "replace")
+        for optional in ("reasoning_effort", "temperature"):   # a model that rejects an optional setting: drop it once
+            if e.code == 400 and optional in payload and optional in body:
+                payload.pop(optional)
+                return _post(cfg, payload, headers)
+        raise urllib.error.HTTPError(e.url, e.code, "%s: %s" % (e.reason, body[:300]), e.headers, None)
 
 
 def _parse_json(text):
