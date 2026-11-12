@@ -1,0 +1,70 @@
+name: Kairos
+options:
+  bundleIdPrefix: com.luisreindlmeier
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.5"
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+    SWIFT_STRICT_CONCURRENCY: complete
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: YF297T4686
+
+targets:
+  Kairos:
+    type: application
+    platform: iOS
+    sources:
+      - path: Kairos
+        type: syncedFolder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.luisreindlmeier.kairos
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        # Only what the generated Info.plist cannot say: plain HTTP to the backend on this Mac or in the local network.
+        INFOPLIST_FILE: Config/Info.plist
+        INFOPLIST_KEY_CFBundleDisplayName: Kairos
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UIUserInterfaceStyle: Light
+        INFOPLIST_KEY_NSCameraUsageDescription: The camera reads the code shown on a Kairos terminal.
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: Kairos reads your check-up from the backend in your local network.
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+
+  KairosTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: KairosTests
+    dependencies:
+      - target: Kairos
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.luisreindlmeier.kairos.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+
+schemes:
+  Kairos:
+    build:
+      targets:
+        Kairos: all
+        KairosTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - KairosTests
+    archive:
+      config: Release
