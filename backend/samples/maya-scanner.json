@@ -1,0 +1,30 @@
+{
+  "age_band": "25-34",
+  "dimensions": {
+    "reserves": {
+      "score": 100.0,
+      "percentile": 95.0304
+    },
+    "confidence_skill": {
+      "score": 35.416666666666664,
+      "percentile": 7.048
+    },
+    "debt": {
+      "score": 100.0,
+      "percentile": 77.34195
+    },
+    "planning_protection": {
+      "score": 37.5,
+      "percentile": 56.53965000000001
+    }
+  },
+  "predicted_score": 55.0343,
+  "predicted_score_clipped": false,
+  "predicted_score_percentile": 56.84255,
+  "missing_dimensions": [],
+  "habits_display_only": {
+    "score": 30.0,
+    "percentile": 6.1031499999999985
+  },
+  "warnings": []
+}

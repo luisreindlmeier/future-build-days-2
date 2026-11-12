@@ -1,0 +1,388 @@
+{
+  "intake": {
+    "name": "Maya",
+    "age": 31.0,
+    "profile": "heir",
+    "purpose": "Freedom",
+    "wealth_total": 275500.0,
+    "cash": 225500.0,
+    "company_share": 0.0,
+    "monthly_income": 4200.0,
+    "income_note": "salary €4,200; inheritance received",
+    "monthly_spending": 3450.0,
+    "monthly_saving_cash": 300.0,
+    "monthly_saving_invested": 0.0,
+    "crash_reaction": "sell",
+    "disability_cover": false,
+    "will": false,
+    "has_buffer_plan": false,
+    "has_diversification_plan": false,
+    "horizon_years": 15.0,
+    "goals": [
+      {
+        "type": "wealth",
+        "target": 500000.0,
+        "priority": 1.0
+      },
+      {
+        "target": 75000.0,
+        "type": "home",
+        "priority": 2.0,
+        "years": 2.0
+      }
+    ],
+    "spending": {
+      "categories": [
+        {
+          "id": "eating_out",
+          "label": "Eating out",
+          "monthly": 585.0,
+          "peer_median": 226.0
+        },
+        {
+          "id": "shopping",
+          "label": "Shopping",
+          "monthly": 500.0,
+          "peer_median": 272.0
+        },
+        {
+          "id": "travel",
+          "label": "Travel",
+          "monthly": 375.0,
+          "peer_median": 309.0
+        },
+        {
+          "id": "subscriptions",
+          "label": "Subscriptions",
+          "monthly": 140.0,
+          "peer_median": 148.0
+        }
+      ],
+      "planned_purchases": [],
+      "subscriptions": [
+        {
+          "last_used_days": 3.0,
+          "name": "Streaming bundle",
+          "monthly": 28.0
+        },
+        {
+          "last_used_days": 95.0,
+          "name": "Wine club",
+          "monthly": 49.0
+        },
+        {
+          "last_used_days": 70.0,
+          "name": "Fitness studio",
+          "monthly": 89.0
+        }
+      ]
+    }
+  },
+  "engine": {
+    "paths": 2000.0,
+    "horizon": "15 years",
+    "main_goal": "Build €500k of wealth by age 46",
+    "scenarios": [
+      {
+        "id": "baseline",
+        "label": "Same habits",
+        "range": "€320k – €1.16m",
+        "middle": "€585k",
+        "goal_success": "62%",
+        "risk_below_today": "5%",
+        "events": {
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "invest",
+        "label": "Invest €200 a month",
+        "range": "€358k – €1.24m",
+        "middle": "€636k",
+        "goal_success": "69%",
+        "risk_below_today": "3%",
+        "events": {
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "hold_rule",
+        "label": "Hold by written rule in a crash",
+        "range": "€381k – €1.32m",
+        "middle": "€696k",
+        "goal_success": "76%",
+        "risk_below_today": "2%",
+        "events": {
+          "panic_sale": "0%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "cover",
+        "label": "Get disability cover",
+        "range": "€322k – €1.17m",
+        "middle": "€587k",
+        "goal_success": "63%",
+        "risk_below_today": "5%",
+        "events": {
+          "panic_sale": "71%",
+          "income_gap": "0%"
+        }
+      },
+      {
+        "id": "full_plan",
+        "label": "Do all of the above",
+        "range": "€423k – €1.40m",
+        "middle": "€754k",
+        "goal_success": "81%",
+        "risk_below_today": "1%",
+        "events": {
+          "panic_sale": "0%",
+          "income_gap": "0%"
+        }
+      }
+    ]
+  },
+  "prediction_agent": {
+    "source": "fallback",
+    "headline": "Goal: Build €500k of wealth by age 46. With your current habits the chance of reaching it is 62%.",
+    "if_nothing_changes": "If nothing changes, your wealth can end between €320k – €1.16m (middle €585k), and the chance of ending below today is 5%.",
+    "future_selves": {
+      "same_habits": "With the same habits, your goal 'Build €500k of wealth by age 46' has a 62% chance.",
+      "with_changes": "With 'Do all of the above', you face the same futures with more room to decide."
+    },
+    "what_it_means": [
+      "If your income stopped tomorrow, your cash would cover 65.4 months of your bills.",
+      "In a middle future, 'Hold by written rule in a crash' leaves you about €111k more at 46, which is 2.7 years of your current spending.",
+      "In a middle future, 'Do all of the above' leaves you about €169k more at 46, which is 4.1 years of your current spending."
+    ],
+    "best_change": {
+      "scenario_id": "hold_rule",
+      "why": "Of the single changes, 'Hold by written rule in a crash' does most for this goal: 76% instead of 62% (+14 points).",
+      "first_step": "Write down your rules for a falling market with your advisor, then practise them in the crash review."
+    },
+    "goals": [
+      {
+        "goal_id": "g1",
+        "best_scenario_id": "hold_rule",
+        "sentence": "Build €500k of wealth by age 46: 62% with same habits, 76% with 'Hold by written rule in a crash'."
+      },
+      {
+        "goal_id": "g2",
+        "best_scenario_id": "hold_rule",
+        "sentence": "Have €75k saved for a home in 2 years: 100% with same habits, 100% with 'Hold by written rule in a crash'."
+      }
+    ],
+    "watch_out": {
+      "event_id": "panic_sale",
+      "helped_by": "hold_rule",
+      "sentence": "A market fall of 15% or more in which you sell and miss the rebound: 71% chance with same habits. With 'Hold by written rule in a crash' it falls to 0% in the simulation."
+    },
+    "trade_off": null,
+    "comparison": [
+      {
+        "scenario_id": "invest",
+        "what_happens": "Invest €200 a month: goal 69%, below today 3%."
+      },
+      {
+        "scenario_id": "hold_rule",
+        "what_happens": "Hold by written rule in a crash: goal 76%, below today 2%. Panic sale: 0% in the simulation."
+      },
+      {
+        "scenario_id": "cover",
+        "what_happens": "Get disability cover: goal 63%, below today 5%. Year without income: 0% in the simulation."
+      },
+      {
+        "scenario_id": "full_plan",
+        "what_happens": "Do all of the above: goal 81%, below today 1%. Panic sale: 0% in the simulation. Year without income: 0% in the simulation."
+      }
+    ],
+    "disclaimer": "Simulated range on stated assumptions, not a promise."
+  },
+  "action_agent": {
+    "source": "fallback",
+    "intro": "Your goal: Build €500k of wealth by age 46, 62% chance today. The quick wins free €603 a month. Quick wins first, then one advisor conversation.",
+    "actions": [
+      {
+        "action_id": "limit_eating_out",
+        "bucket": "this_week",
+        "title": "Set a €280 monthly limit for eating out",
+        "why": "Eating out: €585 a month, people like you spend about €226. Effect on your goal: +11 points. That is €55k freed over 15 years.",
+        "how": "Set a €280 limit in the app. You get a nudge at 80% of it, and whatever you do not spend under the limit moves into your savings.",
+        "verified_by": "Bank data: two months at or below the limit",
+        "effort": "10 minutes",
+        "impact": {
+          "scenario_id": "limit_eating_out",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "73%",
+          "main_goal_change": "+11 points",
+          "risk_below_today_change": "-3 points",
+          "money_kind": "freed",
+          "monthly": "€305",
+          "per_year": "€3,660 a year",
+          "over_horizon": "€55k freed over 15 years",
+          "effect_label": "goal +11 points"
+        }
+      },
+      {
+        "action_id": "limit_shopping",
+        "bucket": "this_week",
+        "title": "Set a €340 monthly limit for shopping",
+        "why": "Shopping: €500 a month, people like you spend about €272. Effect on your goal: +6 points. That is €29k freed over 15 years.",
+        "how": "Set a €340 limit in the app. You get a nudge at 80% of it, and whatever you do not spend under the limit moves into your savings.",
+        "verified_by": "Bank data: two months at or below the limit",
+        "effort": "10 minutes",
+        "impact": {
+          "scenario_id": "limit_shopping",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "68%",
+          "main_goal_change": "+6 points",
+          "risk_below_today_change": "-2 points",
+          "money_kind": "freed",
+          "monthly": "€160",
+          "per_year": "€1,920 a year",
+          "over_horizon": "€29k freed over 15 years",
+          "effect_label": "goal +6 points"
+        }
+      },
+      {
+        "action_id": "cancel_unused_subscriptions",
+        "bucket": "this_week",
+        "title": "Cancel what you no longer use (€138 a month)",
+        "why": "You pay €138 a month for Wine club and Fitness studio, which you no longer use. Effect on your goal: +5 points. That is €25k freed over 15 years.",
+        "how": "Cancel Wine club and Fitness studio in the app's subscription view. The freed €138 a month moves into your savings automatically.",
+        "verified_by": "Bank data: the payments stop",
+        "effort": "5 minutes",
+        "impact": {
+          "scenario_id": "cancel_unused_subscriptions",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "67%",
+          "main_goal_change": "+5 points",
+          "risk_below_today_change": "no clear change",
+          "money_kind": "freed",
+          "monthly": "€138",
+          "per_year": "€1,656 a year",
+          "over_horizon": "€25k freed over 15 years",
+          "effect_label": "goal +5 points"
+        }
+      },
+      {
+        "action_id": "write_will",
+        "bucket": "this_month",
+        "title": "Write your will with the guided checklist",
+        "why": "€276k of savings and investments would pass on without a will. It protects you rather than clearly raising the goal chance.",
+        "how": "Answer the 12-question checklist in the app, then book a notary and upload the signed will.",
+        "verified_by": "Document: signed will uploaded",
+        "effort": "about 20 minutes, then a notary",
+        "impact": {
+          "scenario_id": "write_will",
+          "main_goal_change": "no clear change",
+          "protects": "€276k of savings and investments",
+          "effect_label": "protects"
+        }
+      },
+      {
+        "action_id": "write_crash_rules",
+        "bucket": "with_your_advisor",
+        "title": "Write down your rules for falling markets",
+        "why": "You sold everything in the crash test. Effect on your goal: +14 points.",
+        "how": "Write down your rules for a falling market with your advisor, then practise them in the crash review.",
+        "verified_by": "Advisor confirmed, then passed again in the crash review",
+        "effort": "part of the advisor meeting",
+        "impact": {
+          "scenario_id": "hold_rule",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "76%",
+          "main_goal_change": "+14 points",
+          "risk_below_today_change": "-3 points",
+          "risks": [
+            {
+              "event_id": "panic_sale",
+              "label": "A market fall of 15% or more in which you sell and miss the rebound",
+              "short": "panic sale",
+              "status": "removed",
+              "chance_same_habits": "71%",
+              "chance_here": "0%",
+              "note": "71% to 0% in the simulation"
+            }
+          ],
+          "event": {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "status": "removed",
+            "chance_now": "71%",
+            "chance_after": "0%"
+          },
+          "effect_label": "goal +14 points"
+        }
+      },
+      {
+        "action_id": "save_more_tomorrow",
+        "bucket": "with_your_advisor",
+        "title": "Agree a monthly investment plan of about €200",
+        "why": "You save €300 a month, 7% of income. Effect on your goal: +7 points. That is €36k saved over 15 years.",
+        "how": "Confirm the save-more-tomorrow commitment: half of your next raise goes into your monthly investment plan.",
+        "verified_by": "Bank data: the plan received its first payment",
+        "effort": "part of the advisor meeting",
+        "impact": {
+          "scenario_id": "invest",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "69%",
+          "main_goal_change": "+7 points",
+          "risk_below_today_change": "-2 points",
+          "money_kind": "set_aside",
+          "monthly": "€200",
+          "per_year": "€2,400 a year",
+          "over_horizon": "€36k saved over 15 years",
+          "effect_label": "goal +7 points"
+        }
+      },
+      {
+        "action_id": "income_protection_check",
+        "bucket": "with_your_advisor",
+        "title": "Check your income protection",
+        "why": "You have no disability cover. It protects you rather than clearly raising the goal chance.",
+        "how": "Book the 15-minute income protection check with a specialist.",
+        "verified_by": "Advisor confirmed: cover in place",
+        "effort": "15 minutes",
+        "impact": {
+          "scenario_id": "cover",
+          "main_goal_chance_now": "62%",
+          "main_goal_chance_after": "63%",
+          "main_goal_change": "no clear change",
+          "risk_below_today_change": "no clear change",
+          "risks": [
+            {
+              "event_id": "income_gap",
+              "label": "A year without income and without cover",
+              "short": "year without income",
+              "status": "removed",
+              "chance_same_habits": "5%",
+              "chance_here": "0%",
+              "note": "5% to 0% in the simulation"
+            }
+          ],
+          "event": {
+            "id": "income_gap",
+            "label": "A year without income and without cover",
+            "status": "removed",
+            "chance_now": "5%",
+            "chance_after": "0%"
+          },
+          "effect_label": "protects"
+        }
+      }
+    ],
+    "advisor_meeting": {
+      "topics": [
+        "write_crash_rules",
+        "save_more_tomorrow",
+        "income_protection_check"
+      ],
+      "sentence": "One meeting with your advisor covers: write down your rules for falling markets; agree a monthly investment plan of about €200; check your income protection."
+    },
+    "disclaimer": "Educational guidance, not investment advice. Decisions about investments are made with your advisor after a suitability check."
+  }
+}

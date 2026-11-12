@@ -1,0 +1,69 @@
+{
+  "name": "Customer",
+  "age": 29,
+  "profile": "founder",
+  "purpose": "Independence",
+  "wealth_total": 37600,
+  "cash": 15600,
+  "company_share": 0.0,
+  "monthly_income": 4600,
+  "income_note": "variable income from the new business",
+  "monthly_spending": 3310,
+  "monthly_saving_cash": 300,
+  "monthly_saving_invested": 0,
+  "crash_reaction": "hold",
+  "disability_cover": false,
+  "will": false,
+  "has_buffer_plan": false,
+  "has_diversification_plan": false,
+  "buffer_amount": 400,
+  "invest_amount": 400,
+  "horizon_years": 10,
+  "goals": [
+    {
+      "type": "wealth",
+      "target": 250000,
+      "priority": 1
+    }
+  ],
+  "spending": {
+    "categories": [
+      {
+        "id": "eating_out",
+        "label": "Eating out",
+        "monthly": 380,
+        "peer_median": 226
+      },
+      {
+        "id": "shopping",
+        "label": "Shopping",
+        "monthly": 300,
+        "peer_median": 272
+      },
+      {
+        "id": "subscriptions",
+        "label": "Subscriptions",
+        "monthly": 125,
+        "peer_median": 148
+      }
+    ],
+    "planned_purchases": [],
+    "subscriptions": [
+      {
+        "last_used_days": 1,
+        "name": "Design software",
+        "monthly": 66.0
+      },
+      {
+        "last_used_days": 45,
+        "name": "Coworking membership",
+        "monthly": 120.0
+      },
+      {
+        "last_used_days": 140,
+        "name": "Second cloud storage",
+        "monthly": 15.0
+      }
+    ]
+  }
+}

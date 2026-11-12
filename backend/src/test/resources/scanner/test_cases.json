@@ -1,0 +1,422 @@
+{
+  "cases": [
+    {
+      "name": "1_typical_30_year_old",
+      "answers": {
+        "age": 30,
+        "SAVINGSRANGES": 3,
+        "ABSORBSHOCK": 3,
+        "FS1_1": 3,
+        "FS1_2": 3,
+        "FS1_3": 3,
+        "FS1_4": 3,
+        "FS1_5": 3,
+        "FS1_6": 4,
+        "FS1_7": 3,
+        "FS2_1": 4,
+        "FS2_2": 4,
+        "FS2_3": 3,
+        "GOALCONF": 3,
+        "ACT1_2": 3,
+        "SUBKNOWL1": 4,
+        "MANAGE1_1": 5,
+        "COLLECT": 0,
+        "REJECTED_1": 0,
+        "REJECTED_2": 0,
+        "PRODUSE_1": 0,
+        "PRODUSE_2": 0,
+        "PRODHAVE_4": 1,
+        "PRODHAVE_5": 0,
+        "PRODHAVE_6": 0,
+        "PRODHAVE_2": 0,
+        "AUTOMATED_1": 1,
+        "SCFHORIZON": 3,
+        "SAVEHABIT": 4,
+        "MANAGE1_2": 4,
+        "MANAGE1_4": 4,
+        "PROPPLAN_1": 4,
+        "PROPPLAN_2": 4,
+        "PROPPLAN_3": 4,
+        "PROPPLAN_4": 3,
+        "AUTOMATED_2": 0
+      },
+      "expected": {
+        "age_band": "25-34",
+        "dimensions": {
+          "reserves": {
+            "score": 50.0,
+            "percentile": 41.5015
+          },
+          "confidence_skill": {
+            "score": 56.041666666666664,
+            "percentile": 31.342150000000004
+          },
+          "debt": {
+            "score": 100.0,
+            "percentile": 77.34195
+          },
+          "planning_protection": {
+            "score": 41.666666666666664,
+            "percentile": 60.263749999999995
+          }
+        },
+        "predicted_score": 50.977779166666664,
+        "predicted_score_clipped": false,
+        "predicted_score_percentile": 43.83775,
+        "missing_dimensions": [],
+        "habits_display_only": {
+          "score": 60.62499999999999,
+          "percentile": 46.8421
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "2_strong_profile_62_plus",
+      "answers": {
+        "agecat": 6,
+        "SAVINGSRANGES": 7,
+        "ABSORBSHOCK": 4,
+        "FS1_1": 5,
+        "FS1_2": 5,
+        "FS1_3": 5,
+        "FS1_4": 5,
+        "FS1_5": 5,
+        "FS1_6": 5,
+        "FS1_7": 5,
+        "FS2_1": 5,
+        "FS2_2": 5,
+        "FS2_3": 1,
+        "GOALCONF": 4,
+        "ACT1_2": 5,
+        "SUBKNOWL1": 7,
+        "MANAGE1_1": 5,
+        "COLLECT": 0,
+        "REJECTED_1": 0,
+        "REJECTED_2": 0,
+        "PRODUSE_1": 0,
+        "PRODUSE_2": 0,
+        "PRODHAVE_4": 1,
+        "PRODHAVE_5": 1,
+        "PRODHAVE_6": 1,
+        "PRODHAVE_2": 1,
+        "AUTOMATED_1": 1,
+        "SCFHORIZON": 5,
+        "SAVEHABIT": 6,
+        "MANAGE1_2": 5,
+        "MANAGE1_4": 5,
+        "PROPPLAN_1": 5,
+        "PROPPLAN_2": 5,
+        "PROPPLAN_3": 5,
+        "PROPPLAN_4": 5,
+        "AUTOMATED_2": 1
+      },
+      "expected": {
+        "age_band": "62+",
+        "dimensions": {
+          "reserves": {
+            "score": 100.0,
+            "percentile": 83.20515
+          },
+          "confidence_skill": {
+            "score": 100.0,
+            "percentile": 99.52435
+          },
+          "debt": {
+            "score": 100.0,
+            "percentile": 62.5975
+          },
+          "planning_protection": {
+            "score": 100.0,
+            "percentile": 99.473
+          }
+        },
+        "predicted_score": 72.4618,
+        "predicted_score_clipped": false,
+        "predicted_score_percentile": 99.8353,
+        "missing_dimensions": [],
+        "habits_display_only": {
+          "score": 100.0,
+          "percentile": 98.89225000000002
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "3_debt_stress_27_year_old",
+      "answers": {
+        "age": 27,
+        "SAVINGSRANGES": 1,
+        "ABSORBSHOCK": 1,
+        "FS1_1": 2,
+        "FS1_2": 2,
+        "FS1_3": 2,
+        "FS1_4": 2,
+        "FS1_5": 1,
+        "FS1_6": 2,
+        "FS1_7": 2,
+        "FS2_1": 3,
+        "FS2_2": 3,
+        "FS2_3": 4,
+        "GOALCONF": 2,
+        "ACT1_2": 2,
+        "SUBKNOWL1": 3,
+        "MANAGE1_1": 2,
+        "COLLECT": 1,
+        "REJECTED_1": 1,
+        "REJECTED_2": 1,
+        "PRODUSE_1": 1,
+        "PRODUSE_2": 0,
+        "PRODHAVE_4": 0,
+        "PRODHAVE_5": 0,
+        "PRODHAVE_6": 0,
+        "PRODHAVE_2": 0,
+        "AUTOMATED_1": 7,
+        "SCFHORIZON": 1,
+        "SAVEHABIT": 2,
+        "MANAGE1_2": 2,
+        "MANAGE1_4": 3,
+        "PROPPLAN_1": 2,
+        "PROPPLAN_2": 2,
+        "PROPPLAN_3": 3,
+        "PROPPLAN_4": 2,
+        "AUTOMATED_2": 7
+      },
+      "expected": {
+        "age_band": "25-34",
+        "dimensions": {
+          "reserves": {
+            "score": 0.0,
+            "percentile": 6.20975
+          },
+          "confidence_skill": {
+            "score": 29.791666666666668,
+            "percentile": 4.302
+          },
+          "debt": {
+            "score": 20.833333333333332,
+            "percentile": 0.7041000000000001
+          },
+          "planning_protection": {
+            "score": 0.0,
+            "percentile": 6.1095999999999995
+          }
+        },
+        "predicted_score": 25.848612499999998,
+        "predicted_score_clipped": false,
+        "predicted_score_percentile": 0.9971000000000001,
+        "missing_dimensions": [],
+        "habits_display_only": {
+          "score": 27.500000000000004,
+          "percentile": 4.91435
+        },
+        "warnings": []
+      }
+    },
+    {
+      "name": "4_missing_and_special_codes_45_year_old",
+      "answers": {
+        "age": 45,
+        "SAVINGSRANGES": 99,
+        "ABSORBSHOCK": 3,
+        "FS1_1": 4,
+        "FS1_2": 4,
+        "FS1_3": -1,
+        "FS1_4": 4,
+        "FS1_5": -1,
+        "FS1_6": 4,
+        "FS1_7": -1,
+        "FS2_1": 4,
+        "FS2_2": -1,
+        "FS2_3": 2,
+        "GOALCONF": -1,
+        "ACT1_2": 4,
+        "SUBKNOWL1": 5,
+        "MANAGE1_1": 4,
+        "COLLECT": 8,
+        "REJECTED_1": 0,
+        "REJECTED_2": 0,
+        "PRODUSE_1": 0,
+        "PRODUSE_2": 0,
+        "PRODHAVE_4": 1,
+        "PRODHAVE_5": 0,
+        "PRODHAVE_6": 1,
+        "PRODHAVE_2": 1,
+        "AUTOMATED_1": 7,
+        "SCFHORIZON": 9,
+        "SAVEHABIT": 5,
+        "MANAGE1_2": 4,
+        "MANAGE1_4": 4,
+        "PROPPLAN_1": null,
+        "PROPPLAN_2": null,
+        "PROPPLAN_3": null,
+        "PROPPLAN_4": 4,
+        "AUTOMATED_2": -1
+      },
+      "expected": {
+        "age_band": "45-54",
+        "dimensions": {
+          "reserves": {
+            "score": 66.66666666666666,
+            "percentile": 42.04915
+          },
+          "confidence_skill": {
+            "score": 72.22222222222221,
+            "percentile": 65.87610000000001
+          },
+          "debt": {
+            "score": 95.0,
+            "percentile": 31.347800000000003
+          },
+          "planning_protection": {
+            "score": 60.0,
+            "percentile": 59.52839999999999
+          }
+        },
+        "predicted_score": 57.94438333333332,
+        "predicted_score_clipped": false,
+        "predicted_score_percentile": 55.3115,
+        "missing_dimensions": [],
+        "habits_display_only": {
+          "score": 76.25,
+          "percentile": 73.36699999999998
+        },
+        "warnings": [
+          "SCFHORIZON: code 9 is not a valid response code; treated as missing",
+          "SAVINGSRANGES not answered: reserves rests on ABSORBSHOCK only; predicted score is less reliable (R2 0.313 vs 0.572 in the PUF)"
+        ]
+      }
+    },
+    {
+      "name": "5_too_few_debt_answers_58_year_old",
+      "answers": {
+        "agecat": 5,
+        "SAVINGSRANGES": 5,
+        "ABSORBSHOCK": 4,
+        "FS1_1": 4,
+        "FS1_2": 3,
+        "FS1_3": 4,
+        "FS1_4": 4,
+        "FS1_5": 3,
+        "FS1_6": 4,
+        "FS1_7": 4,
+        "FS2_1": 4,
+        "FS2_2": 4,
+        "FS2_3": 2,
+        "GOALCONF": 3,
+        "ACT1_2": 4,
+        "SUBKNOWL1": 5,
+        "MANAGE1_1": 5,
+        "COLLECT": 0,
+        "PRODHAVE_4": 1,
+        "PRODHAVE_5": 1,
+        "PRODHAVE_6": 0,
+        "PRODHAVE_2": 1,
+        "AUTOMATED_1": 1,
+        "SCFHORIZON": 4,
+        "SAVEHABIT": 5,
+        "MANAGE1_2": 4,
+        "MANAGE1_4": 4,
+        "PROPPLAN_1": 4,
+        "PROPPLAN_2": 4,
+        "PROPPLAN_3": 4,
+        "PROPPLAN_4": 4,
+        "AUTOMATED_2": 1
+      },
+      "expected": {
+        "age_band": "55-61",
+        "dimensions": {
+          "reserves": {
+            "score": 83.33333333333333,
+            "percentile": 53.67265
+          },
+          "confidence_skill": {
+            "score": 69.58333333333333,
+            "percentile": 60.9567
+          },
+          "debt": {
+            "score": null,
+            "percentile": null
+          },
+          "planning_protection": {
+            "score": 79.16666666666667,
+            "percentile": 85.49760000000002
+          }
+        },
+        "predicted_score": null,
+        "predicted_score_clipped": null,
+        "predicted_score_percentile": null,
+        "missing_dimensions": [
+          "debt"
+        ],
+        "habits_display_only": {
+          "score": 78.75,
+          "percentile": 78.04610000000002
+        },
+        "warnings": []
+      }
+    }
+  ],
+  "what_if": [
+    {
+      "name": "whatif_typical_savings_band_3_to_5",
+      "baseline": {
+        "age": 30,
+        "SAVINGSRANGES": 3,
+        "ABSORBSHOCK": 3,
+        "FS1_1": 3,
+        "FS1_2": 3,
+        "FS1_3": 3,
+        "FS1_4": 3,
+        "FS1_5": 3,
+        "FS1_6": 4,
+        "FS1_7": 3,
+        "FS2_1": 4,
+        "FS2_2": 4,
+        "FS2_3": 3,
+        "GOALCONF": 3,
+        "ACT1_2": 3,
+        "SUBKNOWL1": 4,
+        "MANAGE1_1": 5,
+        "COLLECT": 0,
+        "REJECTED_1": 0,
+        "REJECTED_2": 0,
+        "PRODUSE_1": 0,
+        "PRODUSE_2": 0,
+        "PRODHAVE_4": 1,
+        "PRODHAVE_5": 0,
+        "PRODHAVE_6": 0,
+        "PRODHAVE_2": 0,
+        "AUTOMATED_1": 1,
+        "SCFHORIZON": 3,
+        "SAVEHABIT": 4,
+        "MANAGE1_2": 4,
+        "MANAGE1_4": 4,
+        "PROPPLAN_1": 4,
+        "PROPPLAN_2": 4,
+        "PROPPLAN_3": 4,
+        "PROPPLAN_4": 3,
+        "AUTOMATED_2": 0
+      },
+      "change": {
+        "SAVINGSRANGES": 5
+      },
+      "expected": {
+        "change": {
+          "SAVINGSRANGES": 5
+        },
+        "baseline_score": 50.977779166666664,
+        "new_score": 54.03094583333332,
+        "predicted_gain": 3.0531666666666553,
+        "dimension_changes": {
+          "reserves": 16.666666666666657,
+          "confidence_skill": 0.0,
+          "debt": 0.0,
+          "planning_protection": 0.0
+        },
+        "baseline_percentile": 43.83775,
+        "new_percentile": 52.99995
+      }
+    }
+  ]
+}
