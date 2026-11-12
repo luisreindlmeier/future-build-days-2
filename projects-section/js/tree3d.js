@@ -1,5 +1,5 @@
 'use strict';
-/* Kairos 2.5D wealth tree, drawn to look like a real tree.
+/* FinPulse 2.5D wealth tree, drawn to look like a real tree.
    A grassy soil platform with a cut-away front showing the roots (savings), a tapered trunk with bark (investing),
    and one leafy bough per spending category on real limbs around the trunk: lush green when on track, yellowing
    when to watch, thinning and brown with falling leaves when over budget. Drag or use the arrows to turn it;

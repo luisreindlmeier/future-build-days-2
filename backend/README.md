@@ -91,7 +91,7 @@ curl -X POST localhost:8080/api/users/maya/simulate -H 'Content-Type: applicatio
 | GET | `/api/users/{id}/scanner/answers` | The questionnaire answers |
 | POST | `/api/users/{id}/scanner/what-if` | Body `{"SAVINGSRANGES": 5}` → same output as `what_if()` |
 
-## How everything links together (Kairos)
+## How everything links together (FinPulse)
 
 ```
                          ┌──────────────────────── Java backend (this project, :8080) ───────────────────────┐

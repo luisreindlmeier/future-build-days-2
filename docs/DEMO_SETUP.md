@@ -113,7 +113,7 @@ From another terminal, repository root:
 python3 tools/check_demo.py
 ```
 
-This reads bridge health, waits for all four assessments, checks the Kairos response,
+This reads bridge health, waits for all four assessments, checks the FinPulse response,
 and checks the mapping and static page. It does not change customer progress.
 It prints each agent's actual `source`. `live_ai: true` means a key is configured;
 only `source: ai` on returned predictions/actions confirms a live AI result.

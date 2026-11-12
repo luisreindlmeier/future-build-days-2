@@ -1,4 +1,4 @@
-# Future Build Days — Kairos / Financial Health Check-Up
+# Future Build Days — FinPulse / Financial Health Check-Up
 
 - `backend/`: Java 21 / Spring Boot API (tree, scanner, progress, learning) and the Python bridge.
 - `prediction-agent/`: Python simulation engine, prediction and action agents, guardrails.

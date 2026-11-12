@@ -35,11 +35,11 @@ function aiFailMsg(e) {
         ? "The page was opened as a file, so the browser blocks the AI call. Open it with VS Code <b>Live Server</b> (right-click index.html → Open with Live Server)."
         : "Network blocked — check your internet connection.")
     : "";
-  return "Kairos AI couldn't answer (" + e.message + "). Please try again in a moment." + (hint ? "<br>" + hint : "");
+  return "FinPulse AI couldn't answer (" + e.message + "). Please try again in a moment." + (hint ? "<br>" + hint : "");
 }
 
 function aiError(msg) {
-  return `<div class="ai-panel"><div class="ai-head"><span class="ai-badge">AI</span><b>Kairos AI</b></div>
+  return `<div class="ai-panel"><div class="ai-head"><span class="ai-badge">AI</span><b>FinPulse AI</b></div>
     <p class="sub" style="font-size:13.5px">${msg}</p></div>`;
 }
 
@@ -51,7 +51,7 @@ function aiError(msg) {
    fits, and how much to save. Totals, loan payment and profit are
    RE-COMPUTED here (fixPlan), so the numbers on screen always add up.
    ===================================================================== */
-const AI_PLAN_SYSTEM = `You are Kairos, Deutsche Bank's honest financial-planning coach for young clients in Germany.
+const AI_PLAN_SYSTEM = `You are FinPulse, Deutsche Bank's honest financial-planning coach for young clients in Germany.
 You receive JSON with the client's finances (income, costs, saving capacity, savings, five vitals 0-100), ONE life project (project.type, the values the user set with sliders, project.targetM = months from today), the user's own description of the plan (description, may be empty), the bank's rules, rates and market data.
 THINK like an experienced German advisor using realistic Nov 2026 prices in EUR.
 The description is the ONLY input from the user: it says what they want, and maybe how much they want to spend and when.
@@ -83,7 +83,7 @@ Reply with ONLY one JSON object, no markdown. Inside strings use single quotes, 
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const num = v => Math.max(0, Math.round(+v || 0));
 
-/* Yearly loan rate per project type (null = Kairos never lends for it). */
+/* Yearly loan rate per project type (null = FinPulse never lends for it). */
 function loanRate(type) {
   if (PROJECT_TYPES[type].noLoan) return null;
   return { car: CFG.rates.carLoan, home: CFG.rates.mortgage, business: CFG.rates.bizLoan, studies: CFG.rates.studiesLoan }[type] ?? CFG.rates.bizLoan;
@@ -181,7 +181,7 @@ function fixPlan(a, p) {
 function planHTML(p, i) {
   const a = p.plan;
   if (!a.once) return "";                                        // plan saved by an older version
-  const head = `<div class="ai-head"><span class="ai-badge">AI</span><b>Kairos plan</b>
+  const head = `<div class="ai-head"><span class="ai-badge">AI</span><b>FinPulse plan</b>
       ${chip(a.verdict === "not_yet" ? "bad" : a.verdict === "adjust" ? "warn" : "good")}
       <button class="ai-toggle" data-toggleplan="${i}" type="button" aria-expanded="${!p.planHidden}">${p.planHidden ? "Show advice ▾" : "Hide ▴"}</button></div>`;
   if (p.planHidden) return `<div class="ai-panel ai-collapsed">${head}</div>`;
@@ -224,10 +224,10 @@ async function askAI(i) {
 
   const p = projects[i];
   if (!(p.idea || "").trim()) {
-    out.innerHTML = aiError("Describe your plan in the box above first — what, where, how much, when. Kairos AI does the rest.");
+    out.innerHTML = aiError("Describe your plan in the box above first — what, where, how much, when. FinPulse AI does the rest.");
     return;
   }
-  btn.disabled = true; const old = btn.textContent; btn.textContent = "Kairos is thinking…";
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "FinPulse is thinking…";
 
   try {
     const customerURL = new URL(CUSTOMER_FILE, location.href);

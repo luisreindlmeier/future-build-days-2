@@ -1,8 +1,8 @@
-# Kairos — Projects section
+# FinPulse — Projects section
 
-The "life projects" part of the Kairos Financial Health Scanner. A client describes
+The "life projects" part of the FinPulse Financial Health Scanner. A client describes
 a plan in their own words (a car, a home, a trip, a business, a family, studies, a
-sabbatical) and Kairos AI estimates what it costs, what it costs every month, and
+sabbatical) and FinPulse AI estimates what it costs, what it costs every month, and
 whether a bank loan fits. The client's real income, spending and savings decide:
 the app computes hard affordability limits itself and enforces them on the AI's answer.
 

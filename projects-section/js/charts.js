@@ -1,5 +1,5 @@
 'use strict';
-/* Kairos charts: data-driven SVG, no libraries. Every mark has a direct label or a <title> tooltip,
+/* FinPulse charts: data-driven SVG, no libraries. Every mark has a direct label or a <title> tooltip,
    status colours always come with an icon and a word, never colour alone. */
 const C = {blue: '#0018a8', blue2: '#4a63d9', base: '#9aa7ba', ink: '#152a46', muted: '#5c6b7e', line: '#dee5ed',
   ok: '#16745e', watch: '#b07a1e', bad: '#b3412e', soilLo: '#e9dfcc', soilHi: '#8a6a43', bark: '#7a6650'};

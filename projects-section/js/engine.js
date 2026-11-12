@@ -36,7 +36,7 @@ function affordability(user, p) {
   const savedByTarget = Math.round(freeCash + Math.max(0, user.capacity) * months);
 
   let payCap = 0, rate = 0, term = 0, why = "";
-  if (T.noLoan) why = "Kairos never lends for this kind of plan.";
+  if (T.noLoan) why = "FinPulse never lends for this kind of plan.";
   else if (foundationBlocked(user)) why = `Foundation vital ${user.vitals.Foundation}/100 is under ${CFG.caps.foundationGate}: no loan until the base is rebuilt.`;
   else if (p.type === "car") {
     // rule: loan + running costs <= 15% of income, AND it must fit in the money left each month
@@ -154,7 +154,7 @@ function judge(user, p, sim) {
   R.push([onTime ? "ok" : "warn",
     onTime ? `Your ${eur(p.cost)} is ready around ${readyTxt} — on time.`
            : `Ready around ${readyTxt}, after your target ${ym(p.targetM)} — move the date or trim the cost.`]);
-  if (T.noLoan) R.push(["rule", "Kairos never finances consumption: no loan for this, whatever the score."]);
+  if (T.noLoan) R.push(["rule", "FinPulse never finances consumption: no loan for this, whatever the score."]);
 
   return {
     v, R,
@@ -172,7 +172,7 @@ function judgeCar(user, p, sim, readyTxt, onTime, T) {
         ["warn", `Unlock it: 1 month of cushion (${eur(user.costs)}) and no expensive debt.`],
         ["ok", `Save-up path stays open: ${eur(p.budget)} ready around ${readyTxt}.`]
       ],
-      how: `<b>Foundation first.</b> Kairos never recommends a loan on a fragile base.`,
+      how: `<b>Foundation first.</b> FinPulse never recommends a loan on a fragile base.`,
       db: "A savings pot with a standing order — financing talk comes later.", fitM: null
     };
   }

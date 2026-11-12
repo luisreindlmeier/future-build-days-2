@@ -36,7 +36,7 @@ def check(args):
             if mapping['canCommit']:
                 assert mapping['action']['id'] == mapping['backendActionId'], user
         print(f"{user}: READY; prediction={result['prediction']['source']}; "
-              f"actions={result['actions']['source']}; Kairos and mappings OK")
+              f"actions={result['actions']['source']}; FinPulse and mappings OK")
     with urllib.request.urlopen(args.frontend + '/index.html', timeout=10) as response:
         assert response.status == 200
     print('Projects page: HTTP 200 (browser AI needs a separate manual check)')

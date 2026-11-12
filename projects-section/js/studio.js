@@ -1,5 +1,5 @@
 'use strict';
-/* Kairos studio: watch the AI agents work, create your own profile, personalise it.
+/* FinPulse studio: watch the AI agents work, create your own profile, personalise it.
    Loaded before dashboard.js; uses its helpers ($, esc, money, api, header, notify, load, workspace, customer). */
 const PROFILE_API = 'http://localhost:8080/api/profiles';
 const CATEGORIES = [['HOUSING', 'Housing'], ['GROCERIES', 'Groceries'], ['TRANSPORT', 'Transport'], ['EATING_OUT', 'Eating out'],
@@ -198,7 +198,7 @@ function updateTotals() {
 }
 function create() {
   formMode = 'create';
-  const head = header('Create your own profile.', 'Six short steps, then Kairos builds your financial picture.', 'NEW PROFILE');
+  const head = header('Create your own profile.', 'Six short steps, then FinPulse builds your financial picture.', 'NEW PROFILE');
   const starts = `<div class="card start"><p class="eyebrow">START FROM</p><div class="start-row"><button class="button secondary" data-studio="blank">A blank profile</button>
     ${profiles.filter(p => !p.custom).map(p => `<button class="button secondary" data-studio="template" data-id="${esc(p.id)}">${esc(p.name)}’s example</button>`).join('')}</div>
     <p class="sub">An example fills the form with that customer’s numbers. Change anything before you create it.</p></div>`;
@@ -334,7 +334,7 @@ document.addEventListener('click', async e => {
     await loadCalendly();
     const name = workspace?.tree?.name || '';
     window.Calendly.initPopupWidget({url: bookingUrl(), prefill: name ? {name} : {},
-      utm: {utmSource: 'kairos', utmContent: customer}});
+      utm: {utmSource: 'finpulse', utmContent: customer}});
   } catch (err) {
     window.open(BOOKING_URL, '_blank', 'noopener');      // offline / blocked script: plain link still works
   } finally { b.textContent = label; }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kairos bridge: serves the team's prediction-agent folder over HTTP for the Java backend.
+FinPulse bridge: serves the team's prediction-agent folder over HTTP for the Java backend.
 Standard library only. Put this file in the prediction-agent folder (next to engine.py) and run:
 
     python kairos_server.py --agent-dir ../prediction-agent --projects-dir ../projects-section
@@ -194,5 +194,5 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     live = bool(P._cfg()["key"])
-    print(f"Kairos bridge on http://localhost:{args.port}  (engine {E.ENGINE_VERSION}, live AI: {'yes' if live else 'no, rule-based text'})")
+    print(f"FinPulse bridge on http://localhost:{args.port}  (engine {E.ENGINE_VERSION}, live AI: {'yes' if live else 'no, rule-based text'})")
     ThreadingHTTPServer(("127.0.0.1", args.port), Handler).serve_forever()
