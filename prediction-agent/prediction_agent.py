@@ -90,6 +90,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -105,7 +106,7 @@ The user message is JSON with two parts: "input" (the customer and the simulated
 
 HARD RULES (never break these)
 1. Use only numbers that appear in the facts JSON, exactly as given. No new numbers, no arithmetic, no rounding changes, no converting a percentage into "4 of 10". Write "+5 points" as "rises by 5 points". "no clear change" means the difference is within simulation noise: say it does not clearly change.
-2. Every number you mention must belong to the scenario named in the same sentence (or to "same habits", or to the customer). Never credit a number from one scenario to another.
+2. Every number you mention must belong to the scenario named in the same sentence (or to "same habits", or to the customer). Name the scenario with the words of its label (for example "with all changes together", "with a buffer"). Never credit a number from one scenario to another, and never convert amounts into "years of spending" unless that exact phrase is in derived.life_facts.
 3. Risks: use derived.per_scenario[...].risks_remaining. Say "reduced" when its status is "reduced". Never say a risk is "eliminated", "removed", "gone" or "safe" unless its status is "removed" (0%), and even then say "in the simulation".
 4. Calm, plain advisor tone. Short sentences, second person. No emotional or marketing language: no "peace of mind", "real freedom", "legacy", "dream", "safety net", "Start today", no exclamation marks. Say "can" or "could", never "will". No promises about returns, no "guaranteed", "safe", "certain". No product names, never tell anyone to buy or sell anything: describe a change with the words of its label.
 5. If the customer's crash reaction was "sold everything" and a life fact with id "bad_future_protection" exists, use it.
@@ -124,13 +125,13 @@ FIELDS (reply with exactly this JSON object, nothing before or after it)
 {
  "headline": "<=30 words. The main goal (derived.main_goal_id) and its chance with same habits.",
  "if_nothing_changes": "<=45 words. The baseline: range, chance of ending below today, goal chance.",
- "future_selves": {"same_habits": "<=45 words, a calm picture at the horizon age if nothing changes", "with_changes": "<=45 words, the same with the full plan if a combo exists, else the best change"},
+ "future_selves": {"same_habits": "<=45 words, a calm picture at the horizon age if nothing changes", "with_changes": "<=45 words, the same with all changes together if that scenario exists, else the best change; name the scenario in the sentence and use only its numbers"},
  "what_it_means": ["one sentence per item of derived.life_facts, at most 3, each <=35 words, each built on its life fact"],
  "best_change": {"scenario_id": "must be derived.per_goal[main goal].best_scenario_id", "why": "<=40 words, tied to the customer's habits, with the gain from derived"},
  "goals": [{"goal_id": "every goal, in derived.goal_order", "best_scenario_id": "from derived.per_goal", "sentence": "<=35 words: chance today and with the best single change for this goal"}],
  "watch_out": {"event_id": "must be derived.main_risk.event_id", "helped_by": "must be derived.main_risk.helped_by", "sentence": "<=40 words: the event, its chance with same habits, and what the helping change does to it (use its status)"},
  "trade_off": "<=35 words when derived.trade_off_required is true, otherwise null",
- "comparison": [{"scenario_id": "EVERY non-baseline scenario in input order", "what_happens": "<=35 words compared with same habits, numbers from this scenario only"}],
+ "comparison": [{"scenario_id": "EVERY non-baseline scenario in input order", "what_happens": "<=45 words compared with same habits, numbers from this scenario only"}],
  "disclaimer": "Simulated range on stated assumptions, not a promise."
 }
 If derived.per_goal[main goal].best_scenario_id is null, best_change is null and comparison is []. If derived.main_risk is null, watch_out is null. If helped_by is null, say no single change reduces that event. If derived.life_facts is empty, what_it_means is []."""
@@ -411,8 +412,65 @@ def _contexts(data, d):
     return sc, base, of
 
 
+# Words that show which scenario a sentence is about. A sentence naming a scenario may use that
+# scenario's numbers (plus same habits and the customer); a sentence naming none uses its field's scenario.
+SCENARIO_WORDS = {
+    "full_plan": ("all changes", "all the changes", "all of the above", "full plan", "every change", "all five",
+                  "all four", "all three", "all two", "combined", "together"),
+    "buffer": ("buffer", "emergency pot"),
+    "invest": ("invest",),
+    "hold_rule": ("written rule", "your rules", "rules for", "hold by", "holding by", "by rule"),
+    "diversify": ("diversif", "company share", "company stake", "single-company", "largest single holding"),
+    "cover": ("disability cover", "income protection", "income-protection", "get cover", "getting cover"),
+    "close_gap": ("spending gap", "spend no more", "more than you earn"),
+    "spend_less": ("spend less", "spending less", "spending limit", "limits on", "people like you", "unused subscriptions", "cancelling"),
+}
+
+
+def _named(sentence, sc):
+    low = sentence.lower()
+    return [sid for sid in sc if sid != "baseline" and (
+        any(w in low for w in SCENARIO_WORDS.get(sid, ())) or sc[sid]["label"].lower() in low)]
+
+
 def _removed(d, sid):
     return any(r["status"] == "removed" for r in d["per_scenario"].get(sid, {}).get("risks_remaining", []))
+
+
+def autofix(out, data, d):
+    """Deterministic, meaning-preserving edits before validation: add "in the simulation" to a sentence
+    that says a risk is removed, when the scenario it names (or its field's scenario) has that risk at 0%."""
+    if not isinstance(out, dict):
+        return out, []
+    sc = {s["id"]: s for s in data["scenarios"]}
+    best = d["per_goal"][d["main_goal_id"]]["best_scenario_id"]
+    combo = next((s["id"] for s in data["scenarios"] if s["kind"] == "combo"), None)
+    fixed = []
+
+    def fix(text, sid, where):
+        if not isinstance(text, str):
+            return text
+        parts = []
+        for sentence in re.split(r"(?<=[.!?])\s+", text):
+            named = _named(sentence, sc) or ([sid] if sid else [])
+            new, ch = G.qualify_removals(sentence, any(_removed(d, n) for n in named))
+            if ch:
+                fixed.append(where)
+            parts.append(new)
+        return " ".join(parts)
+    if isinstance(out.get("future_selves"), dict):
+        fs = out["future_selves"]
+        fs["with_changes"] = fix(fs.get("with_changes"), combo or best, "future_selves")
+    if isinstance(out.get("best_change"), dict):
+        out["best_change"]["why"] = fix(out["best_change"].get("why"), best, "best_change")
+    if isinstance(out.get("watch_out"), dict):
+        out["watch_out"]["sentence"] = fix(out["watch_out"].get("sentence"), d["main_risk"] and d["main_risk"]["helped_by"], "watch_out")
+    for i, c in enumerate(out.get("comparison") or []):
+        if isinstance(c, dict):
+            c["what_happens"] = fix(c.get("what_happens"), c.get("scenario_id"), f"comparison[{i}]")
+    for k in ("headline", "if_nothing_changes", "trade_off"):
+        out[k] = fix(out.get(k), None, k)
+    return out, fixed
 
 
 def validate_fields(out, data, derived=None):
@@ -428,9 +486,21 @@ def validate_fields(out, data, derived=None):
     combo = next((s["id"] for s in data["scenarios"] if s["kind"] == "combo"), None)
 
     def check(field, text, limit, ctx, sid=None):
+        """Length on the whole text; numbers and wording sentence by sentence, against the named scenario."""
         p = []
         _text(text, field, limit, p)
-        p += G.check_text(text, ctx, removed_ok=_removed(d, sid), ids=ids)
+        if isinstance(text, str):
+            for sentence in re.split(r"(?<=[.!?;])\s+", text):
+                named = _named(sentence, sc)
+                sctx, removed = ctx, _removed(d, sid)
+                if named:
+                    sctx = base
+                    for n in named:
+                        sctx = sctx | of(n)
+                    removed = any(_removed(d, n) for n in named)
+                for msg in G.check_text(sentence, sctx, removed_ok=removed, ids=ids):
+                    if msg not in p:
+                        p.append(msg)
         add(field, p)
 
     check("headline", out.get("headline"), 30, base)
@@ -500,7 +570,7 @@ def validate_fields(out, data, derived=None):
         add("comparison", [f"must list exactly {need} in order"])
     else:
         for i, c in enumerate(cmp_):
-            check(f"comparison[{i}]", c.get("what_happens"), 35, of(c["scenario_id"]), c["scenario_id"])
+            check(f"comparison[{i}]", c.get("what_happens"), 45, of(c["scenario_id"]), c["scenario_id"])
 
     if out.get("disclaimer") != DISCLAIMER:
         add("disclaimer", ["must be exactly the required sentence"])
@@ -678,16 +748,18 @@ def predict(data, call=None, model=None):
     message = json.dumps({"input": data, "derived": d}, ensure_ascii=False)
     log, out, viol = [], None, {}
     for attempt in (1, 2):
+        t_attempt = time.perf_counter()
         user = message if attempt == 1 else (
             message + "\n\nYour previous answer broke these rules:\n- "
             + "\n- ".join(f"{k}: {m}" for k, ms in viol.items() for m in ms)
             + "\nFix exactly these problems, keep everything else, and reply with the JSON object only.")
         try:
-            out = _parse_json(call(cfg, user))
+            out, fixed = autofix(_parse_json(call(cfg, user)), data, d)
             viol = validate_fields(out, data, d)
         except (urllib.error.URLError, OSError, RuntimeError, ValueError, KeyError, TypeError, AttributeError) as e:
-            out, viol = None, {"*": [f"call failed: {type(e).__name__}: {e}"[:200]]}
-        log.append({"attempt": attempt, "violations": viol})
+            out, fixed, viol = None, [], {"*": [f"call failed: {type(e).__name__}: {e}"[:200]]}
+        log.append({"attempt": attempt, "seconds": round(time.perf_counter() - t_attempt, 2), "violations": viol,
+                    **({"auto_qualified": fixed} if fixed else {})})
         if not viol:
             out["best_change"] = out.get("best_change") and dict(out["best_change"], first_step=fb["best_change"]["first_step"])
             return {**base, "source": "ai", "output": out, "problems": [], "attempts": attempt, "model": cfg["model"],

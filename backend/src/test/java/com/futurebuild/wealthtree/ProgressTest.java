@@ -45,6 +45,34 @@ class ProgressTest {
     }
 
     @Test
+    void agentAliasesCommitVerifyAndDropCanonicalActions(@TempDir Path dir) {
+        ProgressService progress = boot(dir.resolve("aliases.ser"));
+        var mapping = progress.actionMappings("maya").get("limit_eating_out");
+        assertTrue(mapping.canCommit());
+        assertEquals("act-limit-eating_out", mapping.action().id());
+        progress.commit("maya", "limit_eating_out");
+        progress.commit("maya", "act-limit-eating_out");
+        assertEquals(1, progress.history("maya").actions().size());
+        assertEquals(mapping.action().monthlyAmount(), progress.history("maya").actions().get(0).monthlyAmount());
+        progress.advance("maya", 3);
+        assertEquals(ActionStatus.VERIFIED, progress.history("maya").actions().get(0).status());
+        progress.drop("maya", "limit_eating_out");
+        assertEquals(ActionStatus.DROPPED, progress.history("maya").actions().get(0).status());
+    }
+
+    @Test
+    void unsupportedAndUnavailableAgentActionsCannotCommit(@TempDir Path dir) {
+        ProgressService progress = boot(dir.resolve("unavailable.ser"));
+        assertFalse(progress.actionMappings("maya").get("write_will").canCommit());
+        assertThrows(java.util.NoSuchElementException.class, () -> progress.commit("maya", "write_will"));
+        assertThrows(java.util.NoSuchElementException.class, () -> progress.commit("maya", "limit_invented"));
+        progress.commit("maya", "income_protection_check");
+        progress.advance("maya", 3);
+        assertFalse(progress.actionMappings("maya").get("income_protection_check").canCommit());
+        assertThrows(java.util.NoSuchElementException.class, () -> progress.commit("maya", "income_protection_check"));
+    }
+
+    @Test
     void remembersAcrossRestartsAndResets(@TempDir Path dir) {
         Path file = dir.resolve("state.ser");
         ProgressService first = boot(file);

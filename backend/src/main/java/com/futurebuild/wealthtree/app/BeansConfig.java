@@ -56,8 +56,21 @@ public class BeansConfig {
         return new PredictionService(intakes::build, id -> s.user(id).profile().name(), bridge);
     }
 
+    /** Learning missions finished in the app, for the advisor view. */
+    @Bean com.futurebuild.wealthtree.learning.LearningService learningService(ObjectMapper json,
+            @Value("${wealthtree.learning-file:data/learning.json}") String file) {
+        return new com.futurebuild.wealthtree.learning.LearningService(json, Path.of(file));
+    }
+
+    /** Customer-made profiles, saved next to the progress memory. */
+    @Bean com.futurebuild.wealthtree.profiles.ProfileService profileService(UserRepository repo, PredictionService p,
+            ProgressService progress, ObjectMapper json, @Value("${wealthtree.profiles-file:data/custom-profiles.json}") String file) {
+        return new com.futurebuild.wealthtree.profiles.ProfileService(repo, p, progress, json, Path.of(file));
+    }
+
     /** Run the team's pipeline for every demo customer at startup, so answers are ready before the pitch. */
     @Bean ApplicationRunner warmUpPredictions(PredictionService p, ProgressService progress, UserRepository repo,
+                                              com.futurebuild.wealthtree.profiles.ProfileService profiles,
                                               @Value("${wealthtree.agent.warmup:true}") boolean on) {
         return args -> { if (on) p.warmUp(repo.findAll().stream().map(u -> u.profile().id()).toList()); };
     }

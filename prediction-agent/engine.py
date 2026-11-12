@@ -104,7 +104,30 @@ HOLDING = {   # how the single big holding is called, per profile
 }
 
 # Habit changes the engine can test. Amounts are illustrative product defaults.
+# Spending far above people like you: shared with action_agent.RULES, so both agents mean the same money.
+SPEND_RULES = {"unused_days": 60, "category_factor": 1.5, "category_target": 1.25}
+
+
+def spend_cuts(c):
+    """Monthly money freed by limiting categories far above peers and cancelling unused subscriptions."""
+    sp = c.get("spending") or {}
+    parts, freed = [], 0.0
+    for cat in sp.get("categories", []):
+        if cat["monthly"] > SPEND_RULES["category_factor"] * cat["peer_median"]:
+            target = int(round(SPEND_RULES["category_target"] * cat["peer_median"] / 10.0)) * 10
+            freed += cat["monthly"] - target
+            parts.append(cat["label"].lower())
+    unused = [s for s in sp.get("subscriptions", []) if s["last_used_days"] >= SPEND_RULES["unused_days"]]
+    if unused:
+        freed += sum(s["monthly"] for s in unused)
+        parts.append("unused subscriptions")
+    return round(freed), parts
+
+
 LEVERS = {
+    "spend_less": {"label": "Spend less where you spend far more than people like you ({cut} a month)",
+                   "change": "{cut_parts_cap} free {cut} a month, which goes into savings",
+                   "first_step": "Set the suggested spending limits and cancel the unused subscriptions in the app."},
     "close_gap": {"label": "Spend no more than you earn",
                   "change": "Bring monthly spending down to your income, closing a {gap} monthly gap",
                   "first_step": "Review your three largest spending categories in the app and set limits until income covers spending again."},
@@ -147,7 +170,12 @@ def lever_text(c, lever):
     """Label, change and first step of a lever, filled in for this customer."""
     L, a, h = LEVERS[lever], amounts(c), holding(c)
     gap = -(c["monthly_saving_cash"] + c["monthly_saving_invested"])
-    f = dict(cap=ASSUMPTIONS["buffer_months"], buf=eur(a["buf"]), inv=eur(a["inv"]), share=pct(c["company_share"]), short=h["short"], gap=eur(max(0, gap)))
+    cut, cut_parts = spend_cuts(c)
+    cats = [p for p in cut_parts if p != "unused subscriptions"]
+    bits = (["limits on " + (", ".join(cats[:-1]) + " and " + cats[-1] if len(cats) > 1 else cats[0])] if cats else []) \
+        + (["cancelling unused subscriptions"] if "unused subscriptions" in cut_parts else [])
+    cut_text = " and ".join(bits) or "spending limits"
+    f = dict(cut=eur(cut), cut_parts=cut_text, cut_parts_cap=cut_text[:1].upper() + cut_text[1:],cap=ASSUMPTIONS["buffer_months"], buf=eur(a["buf"]), inv=eur(a["inv"]), share=pct(c["company_share"]), short=h["short"], gap=eur(max(0, gap)))
     fs = L["first_step"]
     if isinstance(fs, dict):
         fs = fs.get(c.get("profile"), fs["pro"])
@@ -335,12 +363,15 @@ def simulate(c, w, A=ASSUMPTIONS):
 def _world(c):
     return {"share_now": c["company_share"], "cash": c["cash"], "glide": bool(c.get("has_diversification_plan")),
             "save_cash": c["monthly_saving_cash"], "save_inv": c["monthly_saving_invested"],
-            "covered": bool(c["disability_cover"]), "panic": c["crash_reaction"] == "sell", **amounts(c)}
+            "covered": bool(c["disability_cover"]), "panic": c["crash_reaction"] == "sell", **amounts(c),
+            "cut": spend_cuts(c)[0]}
 
 
 def open_levers(c, A=ASSUMPTIONS):
     """Habit changes the customer has not made yet, in a fixed order."""
     L = []
+    if spend_cuts(c)[0] >= 20:
+        L.append("spend_less")
     if c["monthly_saving_cash"] + c["monthly_saving_invested"] < 0:
         L.append("close_gap")          # first stop the leak; saving more makes no sense before that
     elif not c.get("has_buffer_plan") and c["cash"] < A["buffer_months"] * c["monthly_spending"]:
@@ -358,7 +389,9 @@ def open_levers(c, A=ASSUMPTIONS):
 
 def apply_lever(w, lever):
     w = dict(w)
-    if lever == "close_gap":
+    if lever == "spend_less":
+        w["save_cash"] += w.get("cut", 0)
+    elif lever == "close_gap":
         total = w["save_cash"] + w["save_inv"]
         if total < 0:
             w["save_cash"] -= total

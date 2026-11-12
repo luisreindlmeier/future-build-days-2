@@ -1,96 +1,3 @@
-/* =====================================================================
-   AI LAYER — the model thinks from the score and the user's own
-   description of each plan: costs, monthly costs, loan or no loan, how
-   much to save. If there is no key or the call fails, the rule-based
-   verdict above stands.
-   ===================================================================== */
-
-/* Reasoning models (e.g. GLM on the JUPITER gateway) spend tokens "thinking"
-   before the answer — measured ~3000 for one verdict. Keep a generous budget
-   or the reply arrives empty with finish_reason "length". 6000 = 2x the
-   measured need; higher caps let the model ramble and make
-   replies much slower. */
-const AI_MAX_TOKENS = 6000;
-
-function getKey() {
-  // The key lives only in config.js — never typed by the customer.
-  try { localStorage.removeItem("kairos-api-key"); } catch (e) {}   // forget keys saved by older versions
-  return CFG.ai.key || "";
-}
-
-/* Which AI does this key belong to? */
-function providerOf(key) {
-  if (key.startsWith("sk-ant")) return "anthropic";
-  if (key.startsWith("AIza") || key.startsWith("AQ.")) return "gemini"; // old + new Google key formats
-  if (key.startsWith("gsk_")) return "groq";   // Groq: free, very fast, OpenAI-compatible
-  if (key.startsWith("sk-bf-")) return "openai"; // hessian.AI / JUPITER gateway (hackathon key)
-  return "chatgpt";                              // sk-proj-… / sk-… = OpenAI itself // OpenAI and OpenAI-compatible providers (Mistral, Groq, …)
-}
-
-/* One function per provider shape; all return the model's text reply.
-   The browser calls the gateway directly (it allows CORS for http:// pages).
-   No proxy needed — but the page must NOT be opened as file:// (see askAI). */
-async function callProvider(key, system, userContent, geminiModel) {
-  let prov = providerOf(key);
-  let url, opts;
-  if (prov === "anthropic") {
-    const A = CFG.ai.anthropic;
-    url = A.endpoint;
-    opts = { method: "POST", headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": A.version, "anthropic-dangerous-direct-browser-access": "true" },
-      body: JSON.stringify({ model: A.model, max_tokens: AI_MAX_TOKENS, system, messages: [{ role: "user", content: userContent }] }) };
-  } else if (prov === "gemini") {
-    const G = CFG.ai.gemini;
-    opts = { method: "POST", headers: { "content-type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ parts: [{ text: userContent }] }],
-        generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 } }) };   // forces a clean JSON reply
-    // which model to use is decided in askJSON (it falls back model by model)
-    return await send(G.endpoint.replace("{model}", geminiModel || G.model), opts, prov, G.timeoutMs);
-  } else if (prov === "chatgpt") {
-    const C = CFG.ai.chatgpt;
-    url = C.endpoint;
-    const reasoning = /^(gpt-5|o\d)/.test(C.model);          // reasoning models: think briefly, answer fast
-    opts = { method: "POST", headers: { "content-type": "application/json", "authorization": "Bearer " + key },
-      body: JSON.stringify({ model: C.model, max_completion_tokens: AI_MAX_TOKENS,
-        response_format: { type: "json_object" },             // forces a clean JSON reply
-        ...(reasoning ? { reasoning_effort: "low" } : {}),
-        messages: [{ role: "system", content: system }, { role: "user", content: userContent }] }) };
-    prov = "openai";                                          // same reply shape as OpenAI-compatible APIs
-  } else {
-    const O = prov === "groq" ? CFG.ai.groq : CFG.ai.openai;
-    url = O.endpoint;
-    opts = { method: "POST", headers: { "content-type": "application/json", "authorization": "Bearer " + key },
-      body: JSON.stringify({ model: O.model, max_tokens: AI_MAX_TOKENS, messages: [{ role: "system", content: system }, { role: "user", content: userContent }] }) };
-  }
-  return await send(url, opts, prov);
-}
-
-const AI_TIMEOUT_MS = 90000; // give up after 90 s instead of waiting forever
-
-async function send(url, opts, prov, timeoutMs = AI_TIMEOUT_MS) {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
-  let r;
-  try { r = await fetch(url, { ...opts, signal: ctrl.signal }); }
-  catch (e) {
-    if (e.name === "AbortError") throw new Error("no answer after " + timeoutMs / 1000 + " s — the AI service is too slow right now");
-    throw e;
-  } finally { clearTimeout(timer); }
-  if (!r.ok) {
-    let detail = "";
-    try { detail = (await r.text()).slice(0, 160); } catch (e) {}
-    throw new Error("API " + r.status + (detail ? " — " + detail : ""));
-  }
-  const data = await r.json();
-  if (prov === "anthropic") return (data.content || []).map(c => c.text || "").join("");
-  if (prov === "gemini") return (((data.candidates || [])[0] || {}).content || { parts: [] }).parts.map(p => p.text || "").join("");
-  const c0 = (data.choices || [])[0] || {};
-  const txt = ((c0.message || {}).content || "") + (data.choices || []).slice(1).map(c => (c.message || {}).content || "").join("");
-  // Some gateways finish with empty content when reasoning ate the budget — surface it clearly.
-  if (!txt.trim() && c0.finish_reason === "length")
-    throw new Error("model used all tokens on reasoning — increase max_tokens");
-  return txt;
-}
-
 /* Parse the model's reply: grab the outermost {…} and try JSON.parse;
    if it still fails, repair the common breakages (unescaped inner
    double quotes, trailing commas) before giving up. */
@@ -128,47 +35,11 @@ function aiFailMsg(e) {
         ? "The page was opened as a file, so the browser blocks the AI call. Open it with VS Code <b>Live Server</b> (right-click index.html → Open with Live Server)."
         : "Network blocked — check your internet connection.")
     : "";
-  return "Kairos AI couldn't answer (" + e.message + "). Please try again in a moment." + (hint ? "<br>" + hint : "");
-}
-
-/* Ask the model, parse the JSON, retry once on a broken reply. */
-/* Gemini models whose free daily quota is used up — skipped for the rest
-   of this visit so the customer doesn't wait for a model that says no. */
-const geminiExhausted = new Set();
-
-async function askJSON(key, system, facts) {
-  const content = JSON.stringify(facts);
-  if (providerOf(key) !== "gemini") {                 // other providers: one retry on broken JSON
-    for (let attempt = 0; ; attempt++) {
-      const txt = await callProvider(key, system, content);
-      try { return parseVerdict(txt); }
-      catch (pe) { if (attempt >= 1) throw pe; console.warn("Kairos AI: unreadable reply", txt); }
-    }
-  }
-  // Gemini (free): try each model in order. Busy, out of quota, too slow or
-  // a broken reply → move on to the next model instead of failing.
-  const G = CFG.ai.gemini;
-  const models = [G.model, ...(G.fallbacks || [])].filter(m => !geminiExhausted.has(m));
-  if (!models.length) throw new Error("the free daily AI limit is used up — try again tomorrow");
-  let lastErr;
-  for (const model of models) {
-    try {
-      const txt = await callProvider(key, system, content, model);
-      try { return parseVerdict(txt); }
-      catch (pe) { console.warn("Kairos AI: unreadable reply from " + model, txt); lastErr = pe; continue; }
-    } catch (e) {
-      lastErr = e;
-      if (/^API 429/.test(e.message)) { geminiExhausted.add(model); continue; }   // quota used up
-      if (/^(API (500|503|404)|no answer)/.test(e.message)) continue;          // busy / gone / too slow
-      throw e;                                                                  // real error (bad key…) → stop
-    }
-  }
-  if (lastErr && /^API 429/.test(lastErr.message)) throw new Error("the free daily AI limit is used up — try again tomorrow");
-  throw lastErr;
+  return "FinPulse AI couldn't answer (" + e.message + "). Please try again in a moment." + (hint ? "<br>" + hint : "");
 }
 
 function aiError(msg) {
-  return `<div class="ai-panel"><div class="ai-head"><span class="ai-badge">AI</span><b>Kairos AI</b></div>
+  return `<div class="ai-panel"><div class="ai-head"><span class="ai-badge">AI</span><b>FinPulse AI</b></div>
     <p class="sub" style="font-size:13.5px">${msg}</p></div>`;
 }
 
@@ -180,7 +51,7 @@ function aiError(msg) {
    fits, and how much to save. Totals, loan payment and profit are
    RE-COMPUTED here (fixPlan), so the numbers on screen always add up.
    ===================================================================== */
-const AI_PLAN_SYSTEM = `You are Kairos, Deutsche Bank's honest financial-planning coach for young clients in Germany.
+const AI_PLAN_SYSTEM = `You are FinPulse, Deutsche Bank's honest financial-planning coach for young clients in Germany.
 You receive JSON with the client's finances (income, costs, saving capacity, savings, five vitals 0-100), ONE life project (project.type, the values the user set with sliders, project.targetM = months from today), the user's own description of the plan (description, may be empty), the bank's rules, rates and market data.
 THINK like an experienced German advisor using realistic Nov 2026 prices in EUR.
 The description is the ONLY input from the user: it says what they want, and maybe how much they want to spend and when.
@@ -212,7 +83,7 @@ Reply with ONLY one JSON object, no markdown. Inside strings use single quotes, 
 const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const num = v => Math.max(0, Math.round(+v || 0));
 
-/* Yearly loan rate per project type (null = Kairos never lends for it). */
+/* Yearly loan rate per project type (null = FinPulse never lends for it). */
 function loanRate(type) {
   if (PROJECT_TYPES[type].noLoan) return null;
   return { car: CFG.rates.carLoan, home: CFG.rates.mortgage, business: CFG.rates.bizLoan, studies: CFG.rates.studiesLoan }[type] ?? CFG.rates.bizLoan;
@@ -282,8 +153,18 @@ function fixPlan(a, p) {
   }
   if (!checks.length) checks.push(["ok", `Fits your numbers: own share ${eur(own)} of ${eur(aff.saved_by_target)} available by ${aff.target_date}${payment ? `, loan payment ${eur(payment)} of max ${eur(aff.max_loan_payment ?? payment)}/month` : ""}.`]);
 
+  // If the bank check overruled the AI, its summary ("fits your budget") would contradict the verdict.
+  let summary = String(a.summary || "");
+  if (verdict === "not_yet" && a.verdict !== "not_yet") {
+    const when = readyDate(own, aff, monthlySaving);
+    summary = `Not yet: paying ${eur(own)} today would dip into your emergency buffer of ${eur(aff.emergency_buffer_kept)} (3 months of costs), and you have ${eur(aff.free_cash_now)} above it. `
+      + (when === "now" ? "" : /^[A-Z][a-z]{2} \d{4}$/.test(when)
+        ? `Saving ${eur(Math.min(monthlySaving || user.capacity, user.capacity))}/month, you can afford it safely around ${when}.`
+        : `At today's saving rate this is ${when}; a smaller version may fit.`);
+  }
+
   return {
-    verdict, summary: String(a.summary || ""),
+    verdict, summary,
     once, monthly, onceTotal, monthlyTotal, revenue, rate,
     profit: revenue - monthlyTotal - payment,                  // business only
     perMonth: monthlyTotal + payment,                          // what it costs every month incl. the loan
@@ -300,7 +181,7 @@ function fixPlan(a, p) {
 function planHTML(p, i) {
   const a = p.plan;
   if (!a.once) return "";                                        // plan saved by an older version
-  const head = `<div class="ai-head"><span class="ai-badge">AI</span><b>Kairos plan</b>
+  const head = `<div class="ai-head"><span class="ai-badge">AI</span><b>FinPulse plan</b>
       ${chip(a.verdict === "not_yet" ? "bad" : a.verdict === "adjust" ? "warn" : "good")}
       <button class="ai-toggle" data-toggleplan="${i}" type="button" aria-expanded="${!p.planHidden}">${p.planHidden ? "Show advice ▾" : "Hide ▴"}</button></div>`;
   if (p.planHidden) return `<div class="ai-panel ai-collapsed">${head}</div>`;
@@ -340,33 +221,36 @@ function planHTML(p, i) {
 async function askAI(i) {
   const out = document.getElementById("ai" + i);
   const btn = document.querySelector(`[data-ai="${i}"]`);
-  const key = getKey();
-  if (!key) { out.innerHTML = aiError("Kairos AI is not available right now."); return; }
 
   const p = projects[i];
   if (!(p.idea || "").trim()) {
-    out.innerHTML = aiError("Describe your plan in the box above first — what, where, how much, when. Kairos AI does the rest.");
+    out.innerHTML = aiError("Describe your plan in the box above first — what, where, how much, when. FinPulse AI does the rest.");
     return;
   }
-  btn.disabled = true; const old = btn.textContent; btn.textContent = "Kairos is thinking…";
-
-  const facts = {
-    client: { name: user.name, income: user.income, monthly_costs: user.costs, saving_capacity: user.capacity, savings: user.savings, vitals: user.vitals, level: user.level },
-    customer_profile: user.profile || null,           // age, wealth, habits, planned purchases… from the assessment
-    affordability: affordability(user, { ...p, targetM: 0 }),   // HARD limits computed by the bank
-    project: { type: p.type, name: p.name },
-    description: p.idea.trim().slice(0, 1500),
-    rules: CFG.caps, rates: CFG.rates, market: CFG.market,
-    city_prices_eur_sqm: CFG.cities, today: "Nov 2026"
-  };
+  btn.disabled = true; const old = btn.textContent; btn.textContent = "FinPulse is thinking…";
 
   try {
-    p.plan = fixPlan(await askJSON(key, AI_PLAN_SYSTEM, facts), p);
+    const customerURL = new URL(CUSTOMER_FILE, location.href);
+    if (!/\/api\/users\/[^/]+\/kairos$/.test(customerURL.pathname)) {
+      throw new Error("Open a customer connected to the backend before requesting a plan.");
+    }
+    customerURL.pathname = customerURL.pathname.replace(/\/kairos$/, '/projects/plan');
+    customerURL.search = '';
+    const response = await fetch(customerURL, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({type: p.type, name: p.name, description: p.idea.trim().slice(0, 1500)}),
+      signal: AbortSignal.timeout(190000)
+    });
+    if (!response.ok) throw new Error('Planner unavailable (HTTP ' + response.status + ').');
+    const result = await response.json();
+    if (!result.plan) throw new Error(result.message || 'AI estimate unavailable.');
+    p.plan = result.plan;
+    p.targetM = result.targetM;
     p.planHidden = false;                              // a fresh answer is always shown open
     render();                                          // refresh verdict chip, counters, donut, advisor + save
     return;
   } catch (e) {
-    out.innerHTML = aiError(aiFailMsg(e));
+    out.innerHTML = aiError(esc(e.message));
   }
   btn.disabled = false; btn.textContent = old;
 }

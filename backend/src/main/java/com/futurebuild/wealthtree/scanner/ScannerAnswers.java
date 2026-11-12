@@ -51,6 +51,7 @@ public final class ScannerAnswers {
 
     public static Optional<Map<String, Object>> get(String userId) {
         Map<String, Object> a = ALL.get(userId);
+        if (a == null) a = com.futurebuild.wealthtree.profiles.CustomProfiles.answers(userId).orElse(null);   // created profiles
         return a == null ? Optional.empty() : Optional.of(new LinkedHashMap<>(a));
     }
 

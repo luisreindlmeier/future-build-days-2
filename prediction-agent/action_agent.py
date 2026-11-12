@@ -59,6 +59,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 
 import engine as E
@@ -71,9 +72,9 @@ DISCLAIMER = ("Educational guidance, not investment advice. Decisions about inve
 
 # Thresholds of the rules. Transparent demo values; tune with real data.
 RULES = {
-    "unused_days": 60,           # subscription counts as unused after this many days
-    "category_factor": 1.5,      # flag a category above 1.5 x the peer median ...
-    "category_target": 1.25,     # ... and suggest a limit of 1.25 x the peer median
+    "unused_days": E.SPEND_RULES["unused_days"],            # subscription counts as unused after this many days
+    "category_factor": E.SPEND_RULES["category_factor"],    # flag a category above 1.5 x the peer median ...
+    "category_target": E.SPEND_RULES["category_target"],    # ... and suggest a limit of 1.25 x the peer median
     "purchase_income_months": 3, # a purchase above 3 months of income counts as big
     "buffer_target_months": 3,   # buffer the customer should have before a big purchase
     "max_per_bucket": {"this_week": 4, "this_month": 2, "with_your_advisor": 3},
@@ -234,6 +235,8 @@ def build_action_input(c, A=E.ASSUMPTIONS, rules=RULES):
     amt = E.amounts(c)
     gap = -(c["monthly_saving_cash"] + c["monthly_saving_invested"])
     for lv in E.open_levers(c, A):
+        if lv not in LEVER_ACTION:          # spend_less: already shown as its individual limits and cancellations
+            continue
         aid, typ, effort, ver = LEVER_ACTION[lv]
         res, imp = impact_of(E.apply_lever(w0, lv), lv)
         L = E.lever_text(c, lv)
@@ -343,6 +346,23 @@ def build_action_input(c, A=E.ASSUMPTIONS, rules=RULES):
 def _ids(inp):
     return {a["id"] for a in inp["plan"]} | {x["id"] for x in inp.get("not_shown", [])} | {
         "panic_sale", "company_shock", "income_gap", "full_plan", "hold_rule", "close_gap"}
+
+
+def autofix(out, inp):
+    """Add "in the simulation" to a "why" that says a risk is removed, when that action's risk is at 0%."""
+    fixed = []
+    if isinstance(out, dict) and isinstance(out.get("actions"), list):
+        plan = {a["id"]: a for a in inp["plan"]}
+        for i, a in enumerate(out["actions"]):
+            pl = plan.get(a.get("action_id")) if isinstance(a, dict) else None
+            if not pl:
+                continue
+            removed = any(r.get("status") == "removed" for r in pl["impact"].get("risks", [])) or \
+                pl["impact"].get("event", {}).get("status") == "removed"
+            a["why"], ch = G.qualify_removals(a.get("why"), removed)
+            if ch:
+                fixed.append(f"actions[{i}]")
+    return out, fixed
 
 
 def validate_fields(out, inp):
@@ -484,15 +504,17 @@ def recommend(inp, call=None, model=None):
     message = json.dumps(view, ensure_ascii=False)
     log, words, viol = [], None, {}
     for attempt in (1, 2):
+        t_attempt = time.perf_counter()
         user = message if attempt == 1 else (message + "\n\nYour previous answer broke these rules:\n- "
                                              + "\n- ".join(f"{k}: {m}" for k, ms in viol.items() for m in ms)
                                              + "\nFix exactly these problems, keep everything else, and reply with the JSON object only.")
         try:
-            words = P._parse_json(call(cfg, user))
+            words, fixed = autofix(P._parse_json(call(cfg, user)), inp)
             viol = validate_fields(words, inp)
         except (urllib.error.URLError, OSError, RuntimeError, ValueError, KeyError, TypeError, AttributeError) as e:
-            words, viol = None, {"*": [f"call failed: {type(e).__name__}: {e}"[:200]]}
-        log.append({"attempt": attempt, "violations": viol})
+            words, fixed, viol = None, [], {"*": [f"call failed: {type(e).__name__}: {e}"[:200]]}
+        log.append({"attempt": attempt, "seconds": round(time.perf_counter() - t_attempt, 2), "violations": viol,
+                    **({"auto_qualified": fixed} if fixed else {})})
         if not viol:
             return {**meta, "source": "ai", "output": _assemble(words, inp), "problems": [], "attempts": attempt,
                     "model": cfg["model"], "validation": {"attempts": log, "replaced_fields": {}}}

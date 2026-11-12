@@ -1,6 +1,7 @@
 package com.futurebuild.wealthtree.api;
 
 import com.futurebuild.wealthtree.progress.ProgressService;
+import com.futurebuild.wealthtree.recommendation.AgentActionMapping;
 import com.futurebuild.wealthtree.progress.ProgressSummary;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,19 @@ import java.util.Map;
 public class ProgressController {
 
     private final ProgressService progress;
+    private final com.futurebuild.wealthtree.learning.LearningService learning;
 
-    public ProgressController(ProgressService progress) {
+    public ProgressController(ProgressService progress, com.futurebuild.wealthtree.learning.LearningService learning) {
         this.progress = progress;
+        this.learning = learning;
     }
 
-    /** Commit to a recommended action (use the action id, e.g. "act-limit-eating_out", or the recommendation id). */
+    @GetMapping("/api/users/{id}/actions/mapping")
+    public Map<String, AgentActionMapping.Mapping> mappings(@PathVariable String id) {
+        return progress.actionMappings(id);
+    }
+
+    /** Commit to a recommended action (use the action id, e.g. "act-limit-eating_out", the recommendation id, or a supported agent action_id). */
     @PostMapping("/api/users/{id}/actions/{actionId}/commit")
     public ProgressSummary commit(@PathVariable String id, @PathVariable String actionId) { return progress.commit(id, actionId); }
 
@@ -44,6 +52,7 @@ public class ProgressController {
     @PostMapping("/api/demo/reset")
     public Map<String, String> reset() {
         progress.reset();
+        learning.clear();
         return Map.of("status", "reset to demo data");
     }
 }

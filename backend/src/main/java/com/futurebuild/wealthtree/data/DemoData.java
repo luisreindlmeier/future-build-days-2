@@ -80,7 +80,7 @@ public final class DemoData {
     }
 
     /** 6 months of transactions; each category moves linearly from start to end amount. */
-    static List<Transaction> spending(Map<SpendingCategory, double[]> plan) {
+    public static List<Transaction> spending(Map<SpendingCategory, double[]> plan) {
         List<Transaction> out = new ArrayList<>();
         YearMonth first = YearMonth.now().minusMonths(6);
         for (int m = 0; m < 6; m++) {

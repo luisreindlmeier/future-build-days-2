@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Kairos bridge: serves the team's prediction-agent folder over HTTP for the Java backend.
+FinPulse bridge: serves the team's prediction-agent folder over HTTP for the Java backend.
 Standard library only. Put this file in the prediction-agent folder (next to engine.py) and run:
 
-    python kairos_server.py                 # http://localhost:8090
-    python kairos_server.py --port 8090 --agent-dir ../prediction-agent
+    python kairos_server.py --agent-dir ../prediction-agent --projects-dir ../projects-section
+    python kairos_server.py --port 8090 --agent-dir ../prediction-agent --projects-dir ../projects-section
 
 Endpoints (all JSON):
     GET  /health       -> {"ok", "live_ai", "engine_version", "prediction_agent", "action_agent"}
@@ -16,19 +16,41 @@ Endpoints (all JSON):
 
 /assessment returns {intake, engine, chart, prediction, actions, kairos}; "kairos" is the exact shape the
 projects section reads (intake + engine summary + prediction_agent + action_agent).
-The HIP_API_KEY stays in the agent folder's .env. Without a key both agents use their rule-based text.
+The OPENAI_API_KEY stays in backend/.env. Without a key both agents use their rule-based text.
 """
 import argparse
 import json
+import time
 import os
 import sys
+import subprocess
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, default=8090)
 parser.add_argument("--agent-dir", default=os.path.dirname(os.path.abspath(__file__)))
+parser.add_argument("--env-file", default=str(Path(__file__).resolve().parents[1] / ".env"))
+parser.add_argument("--projects-dir", required=True)
 args = parser.parse_args()
+PROJECTS_DIR = str(Path(args.projects_dir).resolve())
+RUNNER = str(Path(__file__).with_name("projects_runner.cjs").resolve())
+# One backend-owned secret; never load a browser key or a legacy agent key.
+config = {}
+try:
+    for line in Path(args.env_file).read_text().splitlines():
+        if line.strip() and not line.lstrip().startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            config[key.strip()] = value.strip().strip("\"'")
+except FileNotFoundError:
+    pass
+for key, fallback in (("OPENAI_API_KEY", ""), ("OPENAI_MODEL", "gpt-4.1-mini"),
+                      ("OPENAI_BASE_URL", "https://api.openai.com/v1")):
+    config[key] = os.environ.get(key, config.get(key, fallback))
+os.environ["HIP_API_KEY"] = config["OPENAI_API_KEY"]
+os.environ["HIP_MODEL"] = config["OPENAI_MODEL"]
+os.environ["HIP_BASE_URL"] = config["OPENAI_BASE_URL"]
 AGENT_DIR = os.path.abspath(args.agent_dir)
 sys.path.insert(0, AGENT_DIR)
 os.chdir(AGENT_DIR)                      # the agents read .env and write guardrail.log here
@@ -67,20 +89,58 @@ def chart(intake):
         full = E.apply_lever(full, lv)
     now, plan = E.simulate(intake, base, a), E.simulate(intake, full, a)
     pick = lambda o: {"p10": o["p10"], "p50": o["p50"], "p90": o["p90"], "riskBelowToday": o["below"]}
+    # one path per single change too, so the chart follows the scenario the customer picks
+    by = {"baseline": pick(now), "full_plan": pick(plan)}
+    for lv in E.open_levers(intake, a):
+        by[lv] = pick(E.simulate(intake, E.apply_lever(base, lv), a))
     return {"startAge": intake["age"], "years": a["years"], "wealthNow": intake["wealth_total"],
-            "todayPath": pick(now), "fullPlan": pick(plan)}
+            "todayPath": pick(now), "fullPlan": pick(plan), "byScenario": by}
+
+
+def _timed(fn, *a):
+    t = time.perf_counter()
+    r = fn(*a)
+    if isinstance(r, dict):
+        r["seconds"] = round(time.perf_counter() - t, 2)
+    return r
 
 
 def assessment(intake):
+    t0 = time.perf_counter()
     agent_input = E.build_agent_input(intake)
-    f_pred = POOL.submit(P.predict, agent_input)
-    f_act = POOL.submit(lambda: A.recommend(A.build_action_input(intake))) if intake.get("spending") is not None else None
+    engine_s = round(time.perf_counter() - t0, 2)
+    f_pred = POOL.submit(_timed, P.predict, agent_input)
+    f_act = POOL.submit(_timed, lambda: A.recommend(A.build_action_input(intake))) if intake.get("spending") is not None else None
     pred = f_pred.result()
     acts = f_act.result() if f_act else None
+    agent_input = {**agent_input, "timings": {"engine_seconds": engine_s, "total_seconds": round(time.perf_counter() - t0, 2),
+                                              "prediction_seconds": pred.get("seconds"),
+                                              "action_seconds": acts.get("seconds") if acts else None}}
     kairos = {"intake": intake, "engine": engine_summary(agent_input),
               "prediction_agent": {"source": pred["source"], **pred["output"]},
               "action_agent": ({"source": acts["source"], **acts["output"]} if acts else None)}
     return {"intake": intake, "engine": agent_input, "chart": chart(intake), "prediction": pred, "actions": acts, "kairos": kairos}
+
+
+def run_projects(data):
+    result = subprocess.run(["node", RUNNER, PROJECTS_DIR], input=json.dumps(data),
+                            text=True, encoding="utf-8", capture_output=True, timeout=15)
+    if result.returncode:
+        raise ValueError("Project inputs or planner response could not be validated")
+    return json.loads(result.stdout)
+
+
+def project_plan(data):
+    prepared = run_projects(data)
+    fallback = {"source": "rules", "plan": None, "affordability": prepared["facts"]["affordability"]}
+    if not P._cfg()["key"]:
+        return {**fallback, "message": "Set OPENAI_API_KEY in backend/.env to enable project estimates."}
+    try:
+        reply = P._call_model(P._cfg(), json.dumps(prepared["facts"]), prepared["system"])
+        result = run_projects({**data, "reply": reply})
+        return {"source": "ai", **result}
+    except Exception:
+        return {**fallback, "message": "AI estimate unavailable; affordability limits are still available."}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -98,7 +158,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.rstrip("/") == "/health":
-            return self._send(200, {"ok": True, "live_ai": bool(P._cfg()["key"]), "engine_version": E.ENGINE_VERSION,
+            return self._send(200, {"ok": True, "live_ai": bool(P._cfg()["key"]), "provider": "openai", "model": P._cfg()["model"], "projects": True, "engine_version": E.ENGINE_VERSION,
                                     "prediction_agent": getattr(P, "AGENT_VERSION", "?"), "action_agent": A.AGENT_VERSION})
         self._send(404, {"error": "see the docstring for endpoints"})
 
@@ -106,6 +166,8 @@ class Handler(BaseHTTPRequestHandler):
         path = self.path.rstrip("/")
         try:
             data = self._body()
+            if path == "/projects":
+                return self._send(200, project_plan(data))
             if path == "/assessment":
                 return self._send(200, assessment(data))
             if path == "/chart":
@@ -132,5 +194,5 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     live = bool(P._cfg()["key"])
-    print(f"Kairos bridge on http://localhost:{args.port}  (engine {E.ENGINE_VERSION}, live AI: {'yes' if live else 'no, rule-based text'})")
+    print(f"FinPulse bridge on http://localhost:{args.port}  (engine {E.ENGINE_VERSION}, live AI: {'yes' if live else 'no, rule-based text'})")
     ThreadingHTTPServer(("127.0.0.1", args.port), Handler).serve_forever()

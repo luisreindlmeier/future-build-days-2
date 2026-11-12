@@ -31,33 +31,8 @@ const CFG = {
 
   market: { evAvg: 39658, evSrc: "AutoScout24, Oct 2026" },
 
-  // ===================== AI CONNECTION =====================
-  // key: the ONLY place the AI key is set (the customer never sees it).
-  //      (Do NOT publish this repo with a real key inside.)
-  // The provider is detected from the key: sk-ant… = Anthropic (Claude),
-  // AIza… or AQ.… = Google (Gemini, free key at aistudio.google.com),
-  // gsk_… = Groq (free key at console.groq.com), sk-bf-… = hessian.AI gateway,
-  // sk-proj-… / sk-… = OpenAI (paid, platform.openai.com).
-  // Your sk-bf-… key is the hIP key from the JAIF handbook (JUPITER AI
-  // Factory, Futury Build Days #4). It speaks the OpenAI protocol at the
-  // gateway below; GLM-5.3-Flash is the handbook's tool-capable pick.
-  // The gateway allows direct browser calls from http:// pages, so no proxy
-  // is needed. Open index.html with VS Code Live Server, not by double-click
-  // (file:// pages get blocked with CORS 403).
-  ai: {
-    key: typeof AI_KEY !== "undefined" ? AI_KEY : "",   // set in js/secrets.js (not in git) — see js/secrets.example.js
-    anthropic: { endpoint: "https://api.anthropic.com/v1/messages", model: "claude-sonnet-5-5", version: "2023-06-01" },
-    chatgpt:   { endpoint: "https://api.openai.com/v1/chat/completions", model: "gpt-5-mini" },  // change the model here if your account has another
-    openai:    { endpoint: "https://hip-gw.hessian.ai/v1/chat/completions", model: "zai-glm-flash/GLM-5.3-Flash" },  // hessian.AI gateway (sk-bf-… keys)
-    gemini:    { endpoint: "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent", model: "gemini-3.5-flash",
-                 // tested Nov 2026: 3.5-flash ~4 s and correct math; 3.7/3.8-flash hung > 60 s;
-                 // flash-lite is ~3 s but got the mortgage math wrong → only a fallback.
-                 fallbacks: ["gemini-3.5-flash-lite", "gemini-flash-latest", "gemini-3.5-flash-lite"], timeoutMs: 30000 },
-                 // order matters: lite answers in ~3 s; flash-latest often hangs, so it comes after;
-                 // lite is listed twice = one more try if its reply was broken.
-                 // Free tier = only ~20 requests/day per model; a model out of quota is skipped.
-    groq:      { endpoint: "https://api.groq.com/openai/v1/chat/completions", model: "openai/gpt-oss-120b" }  // see console.groq.com/docs/models
-  }
+  // AI calls go through the backend; no browser credentials.
+
 };
 
 /* ===================== THE SCORE (constant for now) =====================

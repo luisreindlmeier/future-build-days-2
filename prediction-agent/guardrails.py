@@ -135,6 +135,22 @@ def check_text(text, facts, removed_ok=False, ids=()):
     return v
 
 
+def qualify_removals(text, removed_ok):
+    """If a sentence says a risk is removed and the facts show 0% for it, add the required qualifier
+    "in the simulation" instead of rejecting a true sentence. Returns (text, changed)."""
+    if not isinstance(text, str) or not removed_ok:
+        return text, False
+    out, changed = [], False
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        if REMOVAL.search(sentence) and "in the simulation" not in sentence.lower():
+            body = sentence.rstrip()
+            end = body[-1] if body and body[-1] in ".!?" else ""
+            sentence = (body[:-1] if end else body) + " in the simulation" + (end or ".")
+            changed = True
+        out.append(sentence)
+    return " ".join(out), changed
+
+
 def log(agent, model, attempt, violations, replaced=None):
     """Write guardrail events to the console and guardrail.log."""
     if not violations and not replaced:

@@ -8,4 +8,8 @@ import java.util.Map;
  */
 public interface KairosBridge {
     Map<String, Object> assessment(Map<String, Object> intake) throws Exception;
+    default Map<String, Object> projects(Map<String, Object> request) throws Exception {
+        throw new UnsupportedOperationException("Projects bridge not configured");
+    }
 }
+

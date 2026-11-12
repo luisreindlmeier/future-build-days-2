@@ -13,7 +13,7 @@
    the app keeps the demo constant SCAN from config.js.
    ===================================================================== */
 
-const CUSTOMER_FILE = new URLSearchParams(location.search).get("customer") || "test-worst-case.json";
+const CUSTOMER_FILE = new URLSearchParams(location.search).get("customer") || "http://localhost:8080/api/users/maya/kairos";
 
 /* Pull the JSON object out of the file text. */
 function parseAssessment(text) {

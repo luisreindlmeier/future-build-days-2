@@ -48,7 +48,7 @@ function chip(v) {
 /* ---------- "describe your plan" box (every project type) ---------- */
 function ideaBox(p, i) {
   const what = p.type === "business" ? "business idea" : "plan";
-  return `<label for="idea${i}" class="idea-label">Describe your ${what} in your own words — Kairos AI estimates the costs and whether you need a loan</label>
+  return `<label for="idea${i}" class="idea-label">Describe your ${what} in your own words — FinPulse AI estimates the costs and whether you need a loan</label>
     <div class="idea-wrap">
       <textarea id="idea${i}" class="idea" data-idea="${i}" rows="3" maxlength="1500"
         placeholder="${esc(PROJECT_TYPES[p.type].ask || "")}">${esc(p.idea || "")}</textarea>
@@ -95,14 +95,14 @@ function renderScan(judged) {
   const gate = $("#gateNote");
   gate.hidden = !foundationBlocked(user);
   if (!gate.hidden)
-    gate.innerHTML = `<b>Foundation first.</b> ${user.name}'s base is fragile, so Kairos blocks every financing path and shows the two moves that unlock them: a 1-month cushion (${eur(user.costs)}) and clearing expensive debt.`;
+    gate.innerHTML = `<b>Foundation first.</b> ${user.name}'s base is fragile, so FinPulse blocks every financing path and shows the two moves that unlock them: a 1-month cushion (${eur(user.costs)}) and clearing expensive debt.`;
 }
 
 function renderProjects(judged) {
   if (!projects.length) {
     $("#projects").innerHTML = `<div class="card empty">
       <b>No plans yet</b>
-      <p class="sub">Add your first life project — a car, a home, a trip, a business… — with the button below. Describe it in your own words and Kairos AI estimates what it costs and whether you need a loan.</p></div>`;
+      <p class="sub">Add your first life project — a car, a home, a trip, a business… — with the button below. Describe it in your own words and FinPulse AI estimates what it costs and whether you need a loan.</p></div>`;
     return;
   }
   $("#projects").innerHTML = projects.map((p, i) => {
@@ -115,7 +115,7 @@ function renderProjects(judged) {
       </div>
       <div class="label">Your plan</div>
       ${ideaBox(p, i)}
-      <button class="adv-btn" data-ai="${i}" type="button" style="margin-top:4px">${p.plan ? "Ask Kairos AI again — update my plan" : "Ask Kairos AI — check my plan"}</button>
+      <button class="adv-btn" data-ai="${i}" type="button" style="margin-top:4px">${p.plan ? "Ask FinPulse AI again — update my plan" : "Ask FinPulse AI — check my plan"}</button>
       <div id="ai${i}">${p.plan ? planHTML(p, i) : ""}</div>
       <p class="sub db-help"><b>How Deutsche Bank helps:</b> ${PROJECT_TYPES[p.type].db}</p>
     </div>`;
@@ -133,7 +133,7 @@ function renderPortfolio(sim, judged) {
   }
   $("#portfolio").innerHTML = `
     <div class="reason"><span class="dot" style="background:var(--good)">✓</span><span>Safety cushion: <b>${eur(sim.cushion)}</b> of ${eur(sim.cushionTarget)}${sim.cushion >= sim.cushionTarget ? " — full, every euro goes to projects." : " — fills first, 30% of each month."}</span></div>
-    <div class="reason"><span class="dot" style="background:${monthlyNeed > user.capacity ? "var(--warn)" : "var(--good)"}">${monthlyNeed > user.capacity ? "!" : "✓"}</span><span>Your projects want about <b>${eur(monthlyNeed)} a month</b> to hit every date; you can put aside <b>${eur(user.capacity)}</b>. Kairos funds the nearest first${monthlyNeed > user.capacity ? " — moving one date later is the simplest fix." : "."}</span></div>
+    <div class="reason"><span class="dot" style="background:${monthlyNeed > user.capacity ? "var(--warn)" : "var(--good)"}">${monthlyNeed > user.capacity ? "!" : "✓"}</span><span>Your projects want about <b>${eur(monthlyNeed)} a month</b> to hit every date; you can put aside <b>${eur(user.capacity)}</b>. FinPulse funds the nearest first${monthlyNeed > user.capacity ? " — moving one date later is the simplest fix." : "."}</span></div>
     ${cross}`;
 }
 

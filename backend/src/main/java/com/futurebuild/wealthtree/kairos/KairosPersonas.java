@@ -55,5 +55,9 @@ public final class KairosPersonas {
                     List.of(new Purchase("New car", 38_000, 6)), "salary €3,000")
     );
 
-    public static Optional<Extras> get(String id) { return Optional.ofNullable(ALL.get(id)); }
+    /** Demo persona, or a profile the customer created (profiles.CustomProfiles). */
+    public static Optional<Extras> get(String id) {
+        Extras x = ALL.get(id);
+        return x != null ? Optional.of(x) : com.futurebuild.wealthtree.profiles.CustomProfiles.extras(id);
+    }
 }

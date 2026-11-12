@@ -4,3 +4,8 @@ target/
 .vscode/
 .DS_Store
 /data/
+
+.env
+.env.*
+!.env.example
+__pycache__/

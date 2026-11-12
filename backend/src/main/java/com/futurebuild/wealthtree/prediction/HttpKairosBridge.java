@@ -27,13 +27,22 @@ public class HttpKairosBridge implements KairosBridge {
 
     @Override
     public Map<String, Object> assessment(Map<String, Object> intake) throws Exception {
-        HttpRequest req = HttpRequest.newBuilder(URI.create(baseUrl + "/assessment"))
+        return post("/assessment", intake);
+    }
+
+    @Override
+    public Map<String, Object> projects(Map<String, Object> request) throws Exception {
+        return post("/projects", request);
+    }
+
+    private Map<String, Object> post(String path, Map<String, Object> body) throws Exception {
+        HttpRequest req = HttpRequest.newBuilder(URI.create(baseUrl + path))
                 .timeout(timeout)
                 .header("Content-Type", "application/json; charset=utf-8")
-                .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(intake), StandardCharsets.UTF_8))
+                .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(body), StandardCharsets.UTF_8))
                 .build();
         HttpResponse<String> res = http.send(req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        if (res.statusCode() != 200) throw new IllegalStateException("Kairos bridge returned HTTP " + res.statusCode() + ": " + res.body());
+        if (res.statusCode() != 200) throw new IllegalStateException("Kairos bridge returned HTTP " + res.statusCode());
         return json.readValue(res.body(), new TypeReference<Map<String, Object>>() {});
     }
 }

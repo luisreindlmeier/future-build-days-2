@@ -27,6 +27,7 @@ public class PredictionService {
     private final KairosBridge bridge;
     private final ExecutorService pool = Executors.newFixedThreadPool(4);
     private final Map<String, Entry> cache = new ConcurrentHashMap<>();
+    private final Map<String, PredictionResult> lastReady = new ConcurrentHashMap<>();
 
     /** names: real first name for the projects section (the AI only ever sees "Customer"). */
     public PredictionService(Function<String, Map<String, Object>> intakes, Function<String, String> names, KairosBridge bridge) {
@@ -52,7 +53,18 @@ public class PredictionService {
             }
             return new Entry(intake, start(id, intake));
         });
-        if (e.future().isDone()) return e.future().join();
+        if (e.future().isDone()) {
+            PredictionResult r = e.future().join();
+            if (r.status() == PredictionResult.Status.READY) lastReady.put(id, r);
+            return r;
+        }
+        // While a fresh run is in progress (e.g. after a demo month), keep serving the previous
+        // coaching so the dashboard does not go blank; status RUNNING tells clients to keep polling.
+        PredictionResult prev = lastReady.get(id);
+        if (prev != null) {
+            return new PredictionResult(id, PredictionResult.Status.RUNNING, intake, prev.engine(), prev.chart(),
+                    prev.prediction(), prev.actions(), prev.kairos(), null, prev.updatedAt());
+        }
         return new PredictionResult(id, PredictionResult.Status.RUNNING, intake, null, null, null, null, null, null, Instant.now());
     }
 

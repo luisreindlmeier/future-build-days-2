@@ -9,6 +9,9 @@ public interface UserRepository {
     Optional<UserData> findById(String id);
     UserData save(UserData data);
 
+    /** Remove a customer-made profile. */
+    void delete(String id);
+
     /** Back to the original demo data. */
     void reset();
 }

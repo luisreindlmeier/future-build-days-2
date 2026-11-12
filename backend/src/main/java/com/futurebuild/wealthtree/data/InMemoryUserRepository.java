@@ -17,5 +17,12 @@ public class InMemoryUserRepository implements UserRepository {
     @Override public Collection<UserData> findAll() { return store.values(); }
     @Override public Optional<UserData> findById(String id) { return Optional.ofNullable(store.get(id)); }
     @Override public UserData save(UserData d) { store.put(d.profile().id(), d); return d; }
-    @Override public void reset() { store.clear(); DemoData.all().forEach(this::save); }
+    @Override public void delete(String id) { store.remove(id); }
+
+    /** Demo customers back to their original data; profiles customers created stay (with their own data). */
+    @Override public void reset() {
+        store.clear();
+        DemoData.all().forEach(this::save);
+        com.futurebuild.wealthtree.profiles.CustomProfiles.data().forEach(this::save);
+    }
 }
