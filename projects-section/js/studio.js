@@ -295,12 +295,51 @@ refreshCustomers();
   });
 })();
 
-/* Book a call: set BOOKING_URL to the Calendly link and the button opens it in a new tab. */
-const BOOKING_URL = '';
-document.addEventListener('click', e => {
+/* Book a call with Calendly's embed widget (official, no API token in the browser).
+   Set BOOKING_URL to your Calendly scheduling link, e.g. 'https://calendly.com/your-name/30min'.
+   The button opens Calendly as a popup inside the page, prefilled with the customer's name;
+   when a meeting is booked we show a confirmation. Without a link it explains what is missing. */
+const BOOKING_URL = 'https://calendly.com/ouerfelliyassine19/deutsche-bank';
+const CALENDLY_JS = 'https://assets.calendly.com/assets/external/widget.js';
+const CALENDLY_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+let calendlyLoading = null;
+function loadCalendly() {
+  if (window.Calendly) return Promise.resolve();
+  if (calendlyLoading) return calendlyLoading;
+  const css = document.createElement('link');
+  css.rel = 'stylesheet'; css.href = CALENDLY_CSS;
+  document.head.appendChild(css);
+  calendlyLoading = new Promise((ok, fail) => {
+    const s = document.createElement('script');
+    s.src = CALENDLY_JS; s.async = true; s.onload = ok;
+    s.onerror = () => { calendlyLoading = null; fail(new Error('Calendly could not load')); };
+    document.head.appendChild(s);
+  });
+  return calendlyLoading;
+}
+function bookingUrl() {
+  const u = new URL(BOOKING_URL);
+  u.searchParams.set('hide_gdpr_banner', '1');
+  u.searchParams.set('primary_color', '0018a8');
+  return u.toString();
+}
+document.addEventListener('click', async e => {
   const b = e.target.closest('#bookCall');
   if (!b) return;
-  if (BOOKING_URL) { b.href = BOOKING_URL; b.target = '_blank'; return; }
   e.preventDefault();
-  notify('Booking is coming soon. Your advisor will be able to pick a time with you here.');
+  if (!BOOKING_URL) { notify('Booking is not configured yet: add your Calendly link to BOOKING_URL in js/studio.js.'); return; }
+  const label = b.textContent;
+  b.textContent = 'Opening…';
+  try {
+    await loadCalendly();
+    const name = workspace?.tree?.name || '';
+    window.Calendly.initPopupWidget({url: bookingUrl(), prefill: name ? {name} : {},
+      utm: {utmSource: 'kairos', utmContent: customer}});
+  } catch (err) {
+    window.open(BOOKING_URL, '_blank', 'noopener');      // offline / blocked script: plain link still works
+  } finally { b.textContent = label; }
+});
+window.addEventListener('message', e => {
+  if (e.origin !== 'https://calendly.com' || !e.data || typeof e.data.event !== 'string') return;
+  if (e.data.event === 'calendly.event_scheduled') notify('Your call is booked. You will receive a confirmation email from Calendly.');
 });

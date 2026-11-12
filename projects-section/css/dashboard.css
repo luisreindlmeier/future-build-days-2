@@ -133,7 +133,7 @@ body.team .team-only{display:flex!important}
 .pred-steps li.done i{background:var(--green);border-color:var(--green)}
 .pred-progress{height:6px;background:#eef1f6;border-radius:3px;max-width:360px;margin:26px auto 0;overflow:hidden}
 .pred-progress i{display:block;height:100%;background:var(--blue);transition:width .45s ease}
-.pred{animation:predin .5s ease}
+.pred.enter{animation:predin .5s ease}.pred:not(.enter){animation:none}
 @keyframes predin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .pred-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
 .pred-big{text-align:right}
@@ -155,7 +155,34 @@ body.team .team-only{display:flex!important}
 .pred-tip i{width:9px;height:9px;border-radius:50%;display:inline-block}
 .pred-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:18px;font-size:14px;flex-wrap:wrap}
 .pred-note{font-size:11px;color:var(--muted);margin:14px 0 0}
-@media(prefers-reduced-motion:reduce){.pred-orb span,.pred-steps li.now i{animation:none}.pred{animation:none}}
+/* interactive chart */
+.pred-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin:14px 0 4px;font-size:13px;color:var(--muted)}
+.pred-seg{display:inline-flex;background:#eef1f6;border-radius:8px;padding:3px}
+.pred-seg button{background:none;border-radius:6px;padding:7px 12px;font-size:12px;color:var(--muted);transition:background .2s,color .2s}
+.pred-seg button.on{background:white;color:var(--blue);font-weight:700;box-shadow:0 1px 3px #071c4520}
+.pred-seg button:hover:not(.on){color:var(--ink)}
+.pred-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.pred-toggle input{position:absolute;opacity:0;width:1px;height:1px}
+.pred-toggle span{width:32px;height:18px;border-radius:9px;background:#cfd6e2;position:relative;transition:background .2s;flex:none}
+.pred-toggle span:after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:white;transition:transform .2s;box-shadow:0 1px 2px #0003}
+.pred-toggle input:checked+span{background:var(--blue)}
+.pred-toggle input:checked+span:after{transform:translateX(14px)}
+.pred-toggle input:focus-visible+span{outline:3px solid #5e9cff;outline-offset:2px}
+.pred-chart svg:focus{outline:none}.pred-chart svg:focus-visible{outline:3px solid #5e9cff;outline-offset:4px;border-radius:6px}
+.pred-line{stroke-dasharray:1;stroke-dashoffset:1;animation:preddraw 1s cubic-bezier(.3,.7,.3,1) forwards}
+@keyframes preddraw{to{stroke-dashoffset:0}}
+.pred-fade{animation:predfade .8s ease both}
+@keyframes predfade{from{opacity:0}to{opacity:1}}
+.pred-pop{animation:predpop .5s .7s cubic-bezier(.3,1.6,.5,1) both;transform-box:fill-box;transform-origin:center}
+@keyframes predpop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+.pred-ghost{cursor:pointer}.pred-ghost path:first-of-type{transition:stroke .15s,stroke-width .15s}
+.pred-ghost:hover path:first-of-type{stroke:var(--blue);stroke-width:2.6}.pred-ghost text{opacity:0;transition:opacity .15s}.pred-ghost:hover text{opacity:1;fill:var(--blue);font-weight:700}
+.pred-tip small{opacity:.7;font-size:11px}.pred-tip .rng{opacity:.75;font-size:11px;padding-left:16px}
+.pred-tip .up{color:#7ee2b8;font-weight:700}.pred-tip .down{color:#ffb3a6;font-weight:700}
+.pred-tip{transition:left .08s linear,top .08s linear}
+.pred-chart .legend i.band{height:10px;background:#0018a826;border-radius:2px}
+.pred-chart .legend{flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){.pred-orb span,.pred-steps li.now i{animation:none}.pred.enter,.pred-line,.pred-fade,.pred-pop{animation:none}.pred-line{stroke-dashoffset:0}}
 .pred-tip[hidden]{display:none}
 
 /* ---- learning path ---- */

@@ -153,8 +153,18 @@ function fixPlan(a, p) {
   }
   if (!checks.length) checks.push(["ok", `Fits your numbers: own share ${eur(own)} of ${eur(aff.saved_by_target)} available by ${aff.target_date}${payment ? `, loan payment ${eur(payment)} of max ${eur(aff.max_loan_payment ?? payment)}/month` : ""}.`]);
 
+  // If the bank check overruled the AI, its summary ("fits your budget") would contradict the verdict.
+  let summary = String(a.summary || "");
+  if (verdict === "not_yet" && a.verdict !== "not_yet") {
+    const when = readyDate(own, aff, monthlySaving);
+    summary = `Not yet: paying ${eur(own)} today would dip into your emergency buffer of ${eur(aff.emergency_buffer_kept)} (3 months of costs), and you have ${eur(aff.free_cash_now)} above it. `
+      + (when === "now" ? "" : /^[A-Z][a-z]{2} \d{4}$/.test(when)
+        ? `Saving ${eur(Math.min(monthlySaving || user.capacity, user.capacity))}/month, you can afford it safely around ${when}.`
+        : `At today's saving rate this is ${when}; a smaller version may fit.`);
+  }
+
   return {
-    verdict, summary: String(a.summary || ""),
+    verdict, summary,
     once, monthly, onceTotal, monthlyTotal, revenue, rate,
     profit: revenue - monthlyTotal - payment,                  // business only
     perMonth: monthlyTotal + payment,                          // what it costs every month incl. the loan

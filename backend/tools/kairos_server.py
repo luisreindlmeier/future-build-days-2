@@ -124,7 +124,7 @@ def assessment(intake):
 
 def run_projects(data):
     result = subprocess.run(["node", RUNNER, PROJECTS_DIR], input=json.dumps(data),
-                            text=True, capture_output=True, timeout=15)
+                            text=True, encoding="utf-8", capture_output=True, timeout=15)
     if result.returncode:
         raise ValueError("Project inputs or planner response could not be validated")
     return json.loads(result.stdout)
