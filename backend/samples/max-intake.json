@@ -1,0 +1,81 @@
+{
+  "name": "Customer",
+  "age": 26,
+  "profile": "heir",
+  "purpose": "Freedom",
+  "wealth_total": 490000,
+  "cash": 3100,
+  "company_share": 0.82,
+  "monthly_income": 3000,
+  "income_note": "salary €3,000",
+  "monthly_spending": 2820,
+  "monthly_saving_cash": 180,
+  "monthly_saving_invested": 0,
+  "crash_reaction": "sell",
+  "disability_cover": false,
+  "will": false,
+  "has_buffer_plan": false,
+  "has_diversification_plan": false,
+  "buffer_amount": 400,
+  "invest_amount": 150,
+  "horizon_years": 15,
+  "goals": [
+    {
+      "type": "wealth",
+      "target": 1000000,
+      "priority": 1
+    }
+  ],
+  "spending": {
+    "categories": [
+      {
+        "id": "eating_out",
+        "label": "Eating out",
+        "monthly": 430,
+        "peer_median": 160
+      },
+      {
+        "id": "shopping",
+        "label": "Shopping",
+        "monthly": 380,
+        "peer_median": 215
+      },
+      {
+        "id": "travel",
+        "label": "Travel",
+        "monthly": 150,
+        "peer_median": 246
+      },
+      {
+        "id": "subscriptions",
+        "label": "Subscriptions",
+        "monthly": 200,
+        "peer_median": 126
+      }
+    ],
+    "planned_purchases": [
+      {
+        "label": "New car",
+        "amount": 38000.0,
+        "in_months": 6
+      }
+    ],
+    "subscriptions": [
+      {
+        "last_used_days": 74,
+        "name": "Gym premium",
+        "monthly": 59.0
+      },
+      {
+        "last_used_days": 2,
+        "name": "Streaming bundle",
+        "monthly": 28.0
+      },
+      {
+        "last_used_days": 121,
+        "name": "Car-sharing plus",
+        "monthly": 19.0
+      }
+    ]
+  }
+}

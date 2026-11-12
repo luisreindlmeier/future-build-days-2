@@ -1,0 +1,68 @@
+{
+  "name": "Customer",
+  "age": 24,
+  "profile": "pro",
+  "purpose": "Security",
+  "wealth_total": 2400,
+  "cash": 2100,
+  "company_share": 0.0,
+  "monthly_income": 2900,
+  "monthly_spending": 2065,
+  "monthly_saving_cash": 150,
+  "monthly_saving_invested": 0,
+  "crash_reaction": "hold",
+  "disability_cover": false,
+  "will": false,
+  "has_buffer_plan": false,
+  "has_diversification_plan": false,
+  "buffer_amount": 250,
+  "invest_amount": 150,
+  "horizon_years": 11,
+  "goals": [
+    {
+      "type": "wealth",
+      "target": 100000,
+      "priority": 1
+    }
+  ],
+  "spending": {
+    "categories": [
+      {
+        "id": "eating_out",
+        "label": "Eating out",
+        "monthly": 380,
+        "peer_median": 160
+      },
+      {
+        "id": "shopping",
+        "label": "Shopping",
+        "monthly": 240,
+        "peer_median": 215
+      },
+      {
+        "id": "subscriptions",
+        "label": "Subscriptions",
+        "monthly": 45,
+        "peer_median": 126
+      }
+    ],
+    "planned_purchases": [],
+    "subscriptions": [
+      {
+        "last_used_days": 1,
+        "name": "Music streaming",
+        "monthly": 11.0
+      },
+      {
+        "last_used_days": 80,
+        "name": "Language app",
+        "monthly": 13.0
+      },
+      {
+        "last_used_days": 96,
+        "name": "Fitness app",
+        "monthly": 21.0
+      }
+    ]
+  }
+}

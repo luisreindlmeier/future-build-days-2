@@ -1,0 +1,204 @@
+{
+  "userId": "lena",
+  "name": "Lena",
+  "stage": "SAPLING",
+  "overallHealth": 33,
+  "status": "NEEDS_CARE",
+  "headline": "Growing, but the roots are shallow",
+  "roots": [
+    {
+      "category": "EMERGENCY",
+      "label": "Safety roots",
+      "depth": 0.07,
+      "thickness": 0.26,
+      "health": 0.42,
+      "status": "NEEDS_CARE",
+      "balance": 900.0,
+      "target": 12390.0,
+      "detail": "€900 covers 0.4 months of costs (healthy: 3–6)."
+    },
+    {
+      "category": "GOALS",
+      "label": "Goal roots",
+      "depth": 0.08,
+      "thickness": 0.26,
+      "health": 0.08,
+      "status": "NEEDS_CARE",
+      "balance": 300.0,
+      "target": 4000.0,
+      "detail": "€300 saved towards your projects."
+    },
+    {
+      "category": "RETIREMENT",
+      "label": "Deep roots",
+      "depth": 0.0,
+      "thickness": 0.05,
+      "health": 0.0,
+      "status": "MISSING",
+      "balance": 0.0,
+      "target": 69600.0,
+      "detail": "No private retirement provision yet."
+    },
+    {
+      "category": "PROTECTION",
+      "label": "Anchor roots",
+      "depth": 0.0,
+      "thickness": 0.05,
+      "health": 0.0,
+      "status": "MISSING",
+      "balance": 0.0,
+      "target": 1.0,
+      "detail": "Your income isn’t protected yet."
+    }
+  ],
+  "trunk": {
+    "thickness": 0.15,
+    "height": 0.54,
+    "rings": 0,
+    "cracks": 0,
+    "stability": 0.04,
+    "barkHealth": 1.0,
+    "status": "NEEDS_CARE",
+    "invested": 0.0,
+    "idleCash": 1200.0,
+    "detail": "€0 invested, 0% of your investable money. €1,200 idle in cash."
+  },
+  "leaves": [
+    {
+      "category": "HOUSING",
+      "label": "Housing",
+      "essential": true,
+      "size": 0.97,
+      "leafCount": 39,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 950.0,
+      "monthlyBudget": 1330.0,
+      "peerAverage": 1064.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€950 a month, below the €1,064 households with your income spend."
+    },
+    {
+      "category": "EATING_OUT",
+      "label": "Eating out",
+      "essential": false,
+      "size": 0.61,
+      "leafCount": 27,
+      "health": "ROTTEN",
+      "rottenRatio": 0.59,
+      "monthlyAmount": 380.0,
+      "monthlyBudget": 200.0,
+      "peerAverage": 160.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.29,
+      "detail": "€380 a month, 2.4× what households with your income spend (€160), up 29%."
+    },
+    {
+      "category": "GROCERIES",
+      "label": "Groceries",
+      "essential": true,
+      "size": 0.57,
+      "leafCount": 25,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 330.0,
+      "monthlyBudget": 504.0,
+      "peerAverage": 403.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.04,
+      "detail": "€330 a month, below the €403 households with your income spend."
+    },
+    {
+      "category": "SHOPPING",
+      "label": "Shopping",
+      "essential": false,
+      "size": 0.49,
+      "leafCount": 23,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 240.0,
+      "monthlyBudget": 269.0,
+      "peerAverage": 215.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.11,
+      "detail": "€240 a month, 1.1× what households with your income spend (€215), up 11%."
+    },
+    {
+      "category": "TRANSPORT",
+      "label": "Transport",
+      "essential": true,
+      "size": 0.34,
+      "leafCount": 18,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 120.0,
+      "monthlyBudget": 443.0,
+      "peerAverage": 354.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€120 a month, below the €354 households with your income spend."
+    },
+    {
+      "category": "SUBSCRIPTIONS",
+      "label": "Subscriptions",
+      "essential": false,
+      "size": 0.21,
+      "leafCount": 13,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 45.0,
+      "monthlyBudget": 158.0,
+      "peerAverage": 126.0,
+      "peerGroup": "households with €2,600–3,600 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€45 a month, below the €126 households with your income spend."
+    }
+  ],
+  "branches": [
+    {
+      "projectId": "japan",
+      "name": "Trip to Japan",
+      "type": "TRAVEL",
+      "length": 0.26,
+      "angleDeg": -30.0,
+      "fruit": false,
+      "blossom": false,
+      "detail": "€300 of €4,000 (8%)."
+    }
+  ],
+  "soil": {
+    "richness": 0.47,
+    "layers": 1,
+    "trainingsCompleted": 0,
+    "status": "GROWING",
+    "detail": "Financial confidence & skill 47/100 (CFPB scanner) · 0 learning modules completed."
+  },
+  "weather": {
+    "type": "BREEZY",
+    "reason": "Little buffer: small surprises shake the tree."
+  },
+  "blossoms": [],
+  "wellbeing": {
+    "ageBand": "18-24",
+    "predictedScore": 46.08875833333333,
+    "percentile": 31.739300000000004,
+    "dimensions": {
+      "reserves": 41.666666666666664,
+      "confidence_skill": 46.666666666666664,
+      "debt": 100.0,
+      "planning_protection": 4.166666666666667
+    },
+    "dimensionPercentiles": {
+      "reserves": 39.743449999999996,
+      "confidence_skill": 18.564349999999997,
+      "debt": 76.69980000000001,
+      "planning_protection": 18.9855
+    },
+    "habits": 36.25,
+    "habitsPercentile": 12.35905,
+    "missingDimensions": [],
+    "warnings": []
+  },
+  "progress": null
+}

@@ -1,0 +1,219 @@
+{
+  "userId": "alex",
+  "name": "Alex",
+  "stage": "YOUNG",
+  "overallHealth": 64,
+  "status": "GROWING",
+  "headline": "Growing steadily",
+  "roots": [
+    {
+      "category": "EMERGENCY",
+      "label": "Safety roots",
+      "depth": 0.48,
+      "thickness": 0.59,
+      "health": 0.83,
+      "status": "GROWING",
+      "balance": 9600.0,
+      "target": 19860.0,
+      "detail": "Your savings could cover a shock, but only €9,600 (2.9 months of costs) is set aside as a safety pot."
+    },
+    {
+      "category": "GOALS",
+      "label": "Goal roots",
+      "depth": 0.27,
+      "thickness": 0.41,
+      "health": 0.27,
+      "status": "NEEDS_CARE",
+      "balance": 4000.0,
+      "target": 15000.0,
+      "detail": "€4,000 saved towards your projects."
+    },
+    {
+      "category": "RETIREMENT",
+      "label": "Deep roots",
+      "depth": 0.0,
+      "thickness": 0.05,
+      "health": 0.0,
+      "status": "MISSING",
+      "balance": 0.0,
+      "target": 110400.0,
+      "detail": "No private retirement provision yet."
+    },
+    {
+      "category": "PROTECTION",
+      "label": "Anchor roots",
+      "depth": 0.0,
+      "thickness": 0.05,
+      "health": 0.0,
+      "status": "MISSING",
+      "balance": 0.0,
+      "target": 1.0,
+      "detail": "Your income isn’t protected yet."
+    }
+  ],
+  "trunk": {
+    "thickness": 0.75,
+    "height": 0.77,
+    "rings": 2,
+    "cracks": 0,
+    "stability": 0.64,
+    "barkHealth": 0.79,
+    "status": "GROWING",
+    "invested": 18000.0,
+    "idleCash": 6000.0,
+    "detail": "€18,000 invested, 75% of your investable money. €6,000 idle in cash."
+  },
+  "leaves": [
+    {
+      "category": "HOUSING",
+      "label": "Housing",
+      "essential": true,
+      "size": 0.88,
+      "leafCount": 36,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 1250.0,
+      "monthlyBudget": 1589.0,
+      "peerAverage": 1271.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€1,250 a month, about what households with your income spend (€1,271)."
+    },
+    {
+      "category": "OTHER",
+      "label": "Other",
+      "essential": false,
+      "size": 0.61,
+      "leafCount": 27,
+      "health": "ROTTEN",
+      "rottenRatio": 1.0,
+      "monthlyAmount": 600.0,
+      "monthlyBudget": 135.0,
+      "peerAverage": 108.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.22,
+      "detail": "€600 a month, 5.6× what households with your income spend (€108), up 22%."
+    },
+    {
+      "category": "GROCERIES",
+      "label": "Groceries",
+      "essential": true,
+      "size": 0.5,
+      "leafCount": 23,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 400.0,
+      "monthlyBudget": 628.0,
+      "peerAverage": 502.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€400 a month, below the €502 households with your income spend."
+    },
+    {
+      "category": "EATING_OUT",
+      "label": "Eating out",
+      "essential": false,
+      "size": 0.49,
+      "leafCount": 23,
+      "health": "WILTING",
+      "rottenRatio": 0.25,
+      "monthlyAmount": 380.0,
+      "monthlyBudget": 283.0,
+      "peerAverage": 226.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.07,
+      "detail": "€380 a month, 1.7× what households with your income spend (€226), up 7%."
+    },
+    {
+      "category": "SHOPPING",
+      "label": "Shopping",
+      "essential": false,
+      "size": 0.43,
+      "leafCount": 21,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 300.0,
+      "monthlyBudget": 340.0,
+      "peerAverage": 272.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.0,
+      "detail": "€300 a month, 1.1× what households with your income spend (€272)."
+    },
+    {
+      "category": "TRANSPORT",
+      "label": "Transport",
+      "essential": true,
+      "size": 0.4,
+      "leafCount": 20,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 255.0,
+      "monthlyBudget": 585.0,
+      "peerAverage": 468.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.02,
+      "detail": "€255 a month, below the €468 households with your income spend."
+    },
+    {
+      "category": "SUBSCRIPTIONS",
+      "label": "Subscriptions",
+      "essential": false,
+      "size": 0.28,
+      "leafCount": 15,
+      "health": "HEALTHY",
+      "rottenRatio": 0.0,
+      "monthlyAmount": 125.0,
+      "monthlyBudget": 185.0,
+      "peerAverage": 148.0,
+      "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+      "trendPct": 0.05,
+      "detail": "€125 a month, below the €148 households with your income spend."
+    }
+  ],
+  "branches": [
+    {
+      "projectId": "launch",
+      "name": "Company launch reserve",
+      "type": "BUSINESS",
+      "length": 0.41,
+      "angleDeg": -30.0,
+      "fruit": false,
+      "blossom": false,
+      "detail": "€4,000 of €15,000 (27%)."
+    }
+  ],
+  "soil": {
+    "richness": 0.63,
+    "layers": 2,
+    "trainingsCompleted": 1,
+    "status": "GROWING",
+    "detail": "Financial confidence & skill 63/100 (CFPB scanner) · 1 learning modules completed."
+  },
+  "weather": {
+    "type": "WINDY",
+    "reason": "Your income varies from month to month."
+  },
+  "blossoms": [],
+  "wellbeing": {
+    "ageBand": "25-34",
+    "predictedScore": 56.143758333333324,
+    "percentile": 60.2727,
+    "dimensions": {
+      "reserves": 83.33333333333333,
+      "confidence_skill": 63.33333333333333,
+      "debt": 79.16666666666667,
+      "planning_protection": 25.0
+    },
+    "dimensionPercentiles": {
+      "reserves": 73.9762,
+      "confidence_skill": 46.7747,
+      "debt": 27.87635,
+      "planning_protection": 46.0523
+    },
+    "habits": 58.12500000000001,
+    "habitsPercentile": 41.772600000000004,
+    "missingDimensions": [],
+    "warnings": []
+  },
+  "progress": null
+}

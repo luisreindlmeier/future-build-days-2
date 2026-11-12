@@ -1,0 +1,28 @@
+{
+  "month": "2026-11",
+  "monthsTracked": 0,
+  "healthChangeLastMonth": null,
+  "healthChangeSinceStart": null,
+  "trend": "NEW",
+  "latestEvents": [
+    "Started tracking."
+  ],
+  "milestones": [],
+  "actions": [
+    {
+      "actionId": "act-limit-eating_out",
+      "recommendationId": "rec-limit-eating_out",
+      "title": "Set a €450 monthly limit for eating out",
+      "type": "SPENDING_LIMIT",
+      "target": "EATING_OUT",
+      "monthlyAmount": 450.0,
+      "oneOffAmount": 0.0,
+      "trainingId": "spending",
+      "status": "COMMITTED",
+      "committedIn": "2026-11",
+      "verifiedIn": null,
+      "evidence": null,
+      "stepsDone": 0
+    }
+  ]
+}

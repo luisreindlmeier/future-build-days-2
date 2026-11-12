@@ -1,0 +1,249 @@
+[
+  {
+    "id": "rec-buffer",
+    "pillar": "ROOTS",
+    "priority": 95,
+    "title": "Grow your safety roots",
+    "why": "Your buffer covers 1.6 months. Move €4,850 of idle cash into a safety pot to reach 3 months today.",
+    "action": {
+      "id": "act-buffer",
+      "type": "MOVE_CASH",
+      "title": "Move €4,850 to your safety pot",
+      "target": "EMERGENCY",
+      "monthlyAmount": 0.0,
+      "oneOffAmount": 4850.0,
+      "product": {
+        "id": "SAVINGS_ACCOUNT",
+        "name": "Instant-access savings account",
+        "category": "Save",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "buffer",
+      "title": "Why a safety buffer comes first",
+      "minutes": 4
+    },
+    "predictedScoreGain": 8,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-inheritance",
+    "pillar": "ROOTS",
+    "priority": 90,
+    "title": "Give your inheritance a structure",
+    "why": "Before big decisions: complete the checklist (certificate, asset list, tax notification) and plan it with your Relationship Manager.",
+    "action": {
+      "id": "act-inheritance",
+      "type": "ADVISOR_MEETING",
+      "title": "Book an inheritance debrief",
+      "target": "INHERITANCE",
+      "monthlyAmount": 0.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "RM_MEETING",
+        "name": "Meeting with your Relationship Manager",
+        "category": "Advice",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "inheritance",
+      "title": "Your inheritance checklist",
+      "minutes": 6
+    },
+    "predictedScoreGain": 4,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-limit-eating_out",
+    "pillar": "LEAVES",
+    "priority": 85,
+    "title": "Heal your eating out leaves",
+    "why": "Eating out averages €585 a month: 2.6× what households with your income spend (€226), up 32%. A €450 limit frees €135 a month without cutting it out.",
+    "action": {
+      "id": "act-limit-eating_out",
+      "type": "SPENDING_LIMIT",
+      "title": "Set a €450 monthly limit for eating out",
+      "target": "EATING_OUT",
+      "monthlyAmount": 450.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "BUDGET_ALERTS",
+        "name": "In-app budget limits and alerts",
+        "category": "Spend",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "spending",
+      "title": "Spending habits without guilt",
+      "minutes": 5
+    },
+    "predictedScoreGain": 6,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-limit-shopping",
+    "pillar": "LEAVES",
+    "priority": 85,
+    "title": "Heal your shopping leaves",
+    "why": "Shopping averages €500 a month: 1.8× what households with your income spend (€272), up 34%. A €400 limit frees €100 a month without cutting it out.",
+    "action": {
+      "id": "act-limit-shopping",
+      "type": "SPENDING_LIMIT",
+      "title": "Set a €400 monthly limit for shopping",
+      "target": "SHOPPING",
+      "monthlyAmount": 400.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "BUDGET_ALERTS",
+        "name": "In-app budget limits and alerts",
+        "category": "Spend",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "spending",
+      "title": "Spending habits without guilt",
+      "minutes": 5
+    },
+    "predictedScoreGain": 6,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-invest-idle",
+    "pillar": "TRUNK",
+    "priority": 80,
+    "title": "Put idle money to work",
+    "why": "€140,150 sits idle and loses value to inflation. Invest it in 12 monthly steps, balanced, so a market drop never hits everything at once.",
+    "action": {
+      "id": "act-invest-idle",
+      "type": "INVEST_MONTHLY",
+      "title": "Invest €11,700 a month for 12 months",
+      "target": "BALANCED",
+      "monthlyAmount": 11700.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "MANAGED_PORTFOLIO",
+        "name": "Digital wealth management",
+        "category": "Invest",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "stay-invested",
+      "title": "Storms pass: staying invested in a crash",
+      "minutes": 4
+    },
+    "predictedScoreGain": 10,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-project-home",
+    "pillar": "BRANCH",
+    "priority": 70,
+    "title": "Fund your “Home down payment” branch today",
+    "why": "You already have the money: set aside €75,000 of idle cash in a goal pot so it’s safe and ready for 2028-06-01.",
+    "action": {
+      "id": "act-project-home",
+      "type": "MOVE_CASH",
+      "title": "Move €75,000 into “Home down payment”",
+      "target": "home",
+      "monthlyAmount": 0.0,
+      "oneOffAmount": 75000.0,
+      "product": {
+        "id": "GOAL_POT",
+        "name": "Goal savings pot",
+        "category": "Save",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "goals",
+      "title": "Turning a dream into a savings plan",
+      "minutes": 4
+    },
+    "predictedScoreGain": 4,
+    "wellbeingGain": null
+  },
+  {
+    "id": "rec-protect",
+    "pillar": "ROOTS",
+    "priority": 50,
+    "title": "Anchor your tree",
+    "why": "Your income is your biggest asset and it isn’t protected. Disability cover keeps the tree standing if you can’t work.",
+    "action": {
+      "id": "act-protect",
+      "type": "PROTECT",
+      "title": "Check disability cover",
+      "target": "PROTECTION",
+      "monthlyAmount": 0.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "DISABILITY_INSURANCE",
+        "name": "Occupational disability insurance",
+        "category": "Protect",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "protection",
+      "title": "Protecting your income",
+      "minutes": 4
+    },
+    "predictedScoreGain": 3,
+    "wellbeingGain": 0.5
+  },
+  {
+    "id": "rec-learn",
+    "pillar": "SOIL",
+    "priority": 40,
+    "title": "Enrich your soil",
+    "why": "Short learning steps make every other decision easier. Start with the module that matches your next action.",
+    "action": {
+      "id": "act-learn",
+      "type": "LEARN",
+      "title": "Complete a 5-minute module",
+      "target": "KNOWLEDGE",
+      "monthlyAmount": 0.0,
+      "oneOffAmount": 0.0,
+      "product": null
+    },
+    "training": {
+      "id": "diversification",
+      "title": "Diversification: don’t bet on one tree",
+      "minutes": 5
+    },
+    "predictedScoreGain": 2,
+    "wellbeingGain": 1.0
+  },
+  {
+    "id": "rec-retirement",
+    "pillar": "ROOTS",
+    "priority": 35,
+    "title": "Grow your deep roots",
+    "why": "Starting retirement saving early does most of the work for you through compounding.",
+    "action": {
+      "id": "act-retirement",
+      "type": "AUTO_SAVE",
+      "title": "Start a €100 monthly pension plan",
+      "target": "RETIREMENT",
+      "monthlyAmount": 100.0,
+      "oneOffAmount": 0.0,
+      "product": {
+        "id": "RETIREMENT_PLAN",
+        "name": "Private pension plan",
+        "category": "Save",
+        "url": null
+      }
+    },
+    "training": {
+      "id": "retirement",
+      "title": "Retirement basics in 5 minutes",
+      "minutes": 5
+    },
+    "predictedScoreGain": 2,
+    "wellbeingGain": 0.5
+  }
+]

@@ -1,0 +1,508 @@
+{
+  "months": [
+    {
+      "month": "2026-12",
+      "treeHealth": 58,
+      "events": [
+        "Tree health 49 → 58 (+9): the tree is growing.",
+        "Verified: Set a €450 monthly limit for eating out (Eating out stayed at €424, under the €450 limit).",
+        "Verified: Set a €400 monthly limit for shopping (Shopping stayed at €383, under the €400 limit).",
+        "Verified: Move €4,850 to your safety pot (€4,850 moved).",
+        "Verified: Invest €11,700 a month for 12 months (first investment step executed).",
+        "Verified: Check disability cover (cover confirmed by your advisor).",
+        "Verified: Complete a 5-minute module (module completed).",
+        "Verified: Book an inheritance debrief (confirmed by your Relationship Manager).",
+        "Safety roots grew: 1.6 → 3.0 months of costs."
+      ]
+    },
+    {
+      "month": "2027-01",
+      "treeHealth": 59,
+      "events": [
+        "Tree health 58 → 59 (+1): the tree is growing.",
+        "Eating out went over the limit this month: €458 of €450.",
+        "Markets fell 7.9%: your investments lost €5,826.",
+        "Blossom: +10 tree health since you started (2027-01)."
+      ]
+    },
+    {
+      "month": "2027-02",
+      "treeHealth": 61,
+      "events": [
+        "Tree health 59 → 61 (+2): the tree is growing.",
+        "Markets fell 7.6%: your investments lost €6,037.",
+        "Shopping leaves recovered: rotten → wilting (€469 a month on average).",
+        "Blossom: 3-month safety buffer reached in 2027-02."
+      ]
+    }
+  ],
+  "tree": {
+    "userId": "maya",
+    "name": "Maya",
+    "stage": "MATURE",
+    "overallHealth": 61,
+    "status": "GROWING",
+    "headline": "Growing steadily",
+    "roots": [
+      {
+        "category": "EMERGENCY",
+        "label": "Safety roots",
+        "depth": 0.5,
+        "thickness": 0.6,
+        "health": 1.0,
+        "status": "GROWING",
+        "balance": 10350.0,
+        "target": 20562.0,
+        "detail": "€10,350 covers 3.0 months of costs (healthy: 3–6)."
+      },
+      {
+        "category": "GOALS",
+        "label": "Goal roots",
+        "depth": 0.0,
+        "thickness": 0.05,
+        "health": 0.0,
+        "status": "MISSING",
+        "balance": 0.0,
+        "target": 75000.0,
+        "detail": "No savings set aside for your projects yet."
+      },
+      {
+        "category": "RETIREMENT",
+        "label": "Deep roots",
+        "depth": 0.0,
+        "thickness": 0.05,
+        "health": 0.0,
+        "status": "MISSING",
+        "balance": 0.0,
+        "target": 100800.0,
+        "detail": "No private retirement provision yet."
+      },
+      {
+        "category": "PROTECTION",
+        "label": "Anchor roots",
+        "depth": 0.8,
+        "thickness": 0.84,
+        "health": 0.54,
+        "status": "STRONG",
+        "balance": 0.0,
+        "target": 1.0,
+        "detail": "Income protection in place."
+      }
+    ],
+    "trunk": {
+      "thickness": 0.6,
+      "height": 0.71,
+      "rings": 0,
+      "cracks": 0,
+      "stability": 0.65,
+      "barkHealth": 1.0,
+      "status": "GROWING",
+      "invested": 73689.33144704284,
+      "idleCash": 182944.0,
+      "detail": "€73,689 invested, 29% of your investable money. €182,944 idle in cash."
+    },
+    "leaves": [
+      {
+        "category": "HOUSING",
+        "label": "Housing",
+        "essential": true,
+        "size": 0.96,
+        "leafCount": 39,
+        "health": "HEALTHY",
+        "rottenRatio": 0.0,
+        "monthlyAmount": 1345.0,
+        "monthlyBudget": 1589.0,
+        "peerAverage": 1271.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": 0.0,
+        "detail": "€1,345 a month, 1.1× what households with your income spend (€1,271)."
+      },
+      {
+        "category": "EATING_OUT",
+        "label": "Eating out",
+        "essential": false,
+        "size": 0.6,
+        "leafCount": 27,
+        "health": "ROTTEN",
+        "rottenRatio": 0.59,
+        "monthlyAmount": 538.0,
+        "monthlyBudget": 283.0,
+        "peerAverage": 226.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": -0.36,
+        "detail": "€538 a month, 2.4× what households with your income spend (€226)."
+      },
+      {
+        "category": "SHOPPING",
+        "label": "Shopping",
+        "essential": false,
+        "size": 0.56,
+        "leafCount": 25,
+        "health": "WILTING",
+        "rottenRatio": 0.25,
+        "monthlyAmount": 469.0,
+        "monthlyBudget": 340.0,
+        "peerAverage": 272.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": -0.35,
+        "detail": "€469 a month, 1.7× what households with your income spend (€272)."
+      },
+      {
+        "category": "TRAVEL",
+        "label": "Travel",
+        "essential": false,
+        "size": 0.55,
+        "leafCount": 25,
+        "health": "WILTING",
+        "rottenRatio": 0.25,
+        "monthlyAmount": 437.0,
+        "monthlyBudget": 386.0,
+        "peerAverage": 309.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": 0.0,
+        "detail": "€437 a month, 1.4× what households with your income spend (€309)."
+      },
+      {
+        "category": "GROCERIES",
+        "label": "Groceries",
+        "essential": true,
+        "size": 0.49,
+        "leafCount": 23,
+        "health": "HEALTHY",
+        "rottenRatio": 0.0,
+        "monthlyAmount": 349.0,
+        "monthlyBudget": 628.0,
+        "peerAverage": 502.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": -0.01,
+        "detail": "€349 a month, below the €502 households with your income spend."
+      },
+      {
+        "category": "TRANSPORT",
+        "label": "Transport",
+        "essential": true,
+        "size": 0.32,
+        "leafCount": 17,
+        "health": "HEALTHY",
+        "rottenRatio": 0.0,
+        "monthlyAmount": 150.0,
+        "monthlyBudget": 585.0,
+        "peerAverage": 468.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": 0.0,
+        "detail": "€150 a month, below the €468 households with your income spend."
+      },
+      {
+        "category": "SUBSCRIPTIONS",
+        "label": "Subscriptions",
+        "essential": false,
+        "size": 0.31,
+        "leafCount": 16,
+        "health": "HEALTHY",
+        "rottenRatio": 0.0,
+        "monthlyAmount": 139.0,
+        "monthlyBudget": 185.0,
+        "peerAverage": 148.0,
+        "peerGroup": "households with €3,600–5,000 net income (Destatis, Laufende Wirtschaftsrechnungen 2024)",
+        "trendPct": -0.01,
+        "detail": "€139 a month, below the €148 households with your income spend."
+      }
+    ],
+    "branches": [
+      {
+        "projectId": "home",
+        "name": "Home down payment",
+        "type": "HOME",
+        "length": 0.2,
+        "angleDeg": -30.0,
+        "fruit": false,
+        "blossom": false,
+        "detail": "€0 of €75,000 (0%)."
+      }
+    ],
+    "soil": {
+      "richness": 0.4,
+      "layers": 5,
+      "trainingsCompleted": 6,
+      "status": "NEEDS_CARE",
+      "detail": "Financial confidence & skill 40/100 (CFPB scanner) · 6 learning modules completed."
+    },
+    "weather": {
+      "type": "CALM",
+      "reason": "No unusual pressure right now."
+    },
+    "blossoms": [
+      "+10 tree health since you started (2027-01)",
+      "3-month safety buffer reached in 2027-02"
+    ],
+    "wellbeing": {
+      "ageBand": "25-34",
+      "predictedScore": 56.52871666666667,
+      "percentile": 62.890950000000004,
+      "dimensions": {
+        "reserves": 100.0,
+        "confidence_skill": 39.58333333333333,
+        "debt": 100.0,
+        "planning_protection": 54.166666666666664
+      },
+      "dimensionPercentiles": {
+        "reserves": 95.0304,
+        "confidence_skill": 9.727,
+        "debt": 77.34195,
+        "planning_protection": 72.06295
+      },
+      "habits": 48.75,
+      "habitsPercentile": 25.634100000000004,
+      "missingDimensions": [],
+      "warnings": []
+    },
+    "progress": {
+      "month": "2027-02",
+      "monthsTracked": 3,
+      "healthChangeLastMonth": 2,
+      "healthChangeSinceStart": 12,
+      "trend": "GROWING",
+      "latestEvents": [
+        "Tree health 59 → 61 (+2): the tree is growing.",
+        "Markets fell 7.6%: your investments lost €6,037.",
+        "Shopping leaves recovered: rotten → wilting (€469 a month on average).",
+        "Blossom: 3-month safety buffer reached in 2027-02."
+      ],
+      "milestones": [
+        "+10 tree health since you started (2027-01)",
+        "3-month safety buffer reached in 2027-02"
+      ],
+      "actions": [
+        {
+          "actionId": "act-limit-eating_out",
+          "recommendationId": "rec-limit-eating_out",
+          "title": "Set a €450 monthly limit for eating out",
+          "type": "SPENDING_LIMIT",
+          "target": "EATING_OUT",
+          "monthlyAmount": 450.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "spending",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "Eating out stayed at €424, under the €450 limit",
+          "stepsDone": 0
+        },
+        {
+          "actionId": "act-limit-shopping",
+          "recommendationId": "rec-limit-shopping",
+          "title": "Set a €400 monthly limit for shopping",
+          "type": "SPENDING_LIMIT",
+          "target": "SHOPPING",
+          "monthlyAmount": 400.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "spending",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "Shopping stayed at €383, under the €400 limit",
+          "stepsDone": 0
+        },
+        {
+          "actionId": "act-buffer",
+          "recommendationId": "rec-buffer",
+          "title": "Move €4,850 to your safety pot",
+          "type": "MOVE_CASH",
+          "target": "EMERGENCY",
+          "monthlyAmount": 0.0,
+          "oneOffAmount": 4850.0,
+          "trainingId": "buffer",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "€4,850 moved",
+          "stepsDone": 0
+        },
+        {
+          "actionId": "act-invest-idle",
+          "recommendationId": "rec-invest-idle",
+          "title": "Invest €11,700 a month for 12 months",
+          "type": "INVEST_MONTHLY",
+          "target": "BALANCED",
+          "monthlyAmount": 11700.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "stay-invested",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "first investment step executed",
+          "stepsDone": 3
+        },
+        {
+          "actionId": "act-protect",
+          "recommendationId": "rec-protect",
+          "title": "Check disability cover",
+          "type": "PROTECT",
+          "target": "PROTECTION",
+          "monthlyAmount": 0.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "protection",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "cover confirmed by your advisor",
+          "stepsDone": 0
+        },
+        {
+          "actionId": "act-learn",
+          "recommendationId": "rec-learn",
+          "title": "Complete a 5-minute module",
+          "type": "LEARN",
+          "target": "KNOWLEDGE",
+          "monthlyAmount": 0.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "diversification",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "module completed",
+          "stepsDone": 0
+        },
+        {
+          "actionId": "act-inheritance",
+          "recommendationId": "rec-inheritance",
+          "title": "Book an inheritance debrief",
+          "type": "ADVISOR_MEETING",
+          "target": "INHERITANCE",
+          "monthlyAmount": 0.0,
+          "oneOffAmount": 0.0,
+          "trainingId": "inheritance",
+          "status": "VERIFIED",
+          "committedIn": "2026-11",
+          "verifiedIn": "2026-12",
+          "evidence": "confirmed by your Relationship Manager",
+          "stepsDone": 0
+        }
+      ]
+    }
+  },
+  "progress": {
+    "month": "2027-02",
+    "monthsTracked": 3,
+    "healthChangeLastMonth": 2,
+    "healthChangeSinceStart": 12,
+    "trend": "GROWING",
+    "latestEvents": [
+      "Tree health 59 → 61 (+2): the tree is growing.",
+      "Markets fell 7.6%: your investments lost €6,037.",
+      "Shopping leaves recovered: rotten → wilting (€469 a month on average).",
+      "Blossom: 3-month safety buffer reached in 2027-02."
+    ],
+    "milestones": [
+      "+10 tree health since you started (2027-01)",
+      "3-month safety buffer reached in 2027-02"
+    ],
+    "actions": [
+      {
+        "actionId": "act-limit-eating_out",
+        "recommendationId": "rec-limit-eating_out",
+        "title": "Set a €450 monthly limit for eating out",
+        "type": "SPENDING_LIMIT",
+        "target": "EATING_OUT",
+        "monthlyAmount": 450.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "spending",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "Eating out stayed at €424, under the €450 limit",
+        "stepsDone": 0
+      },
+      {
+        "actionId": "act-limit-shopping",
+        "recommendationId": "rec-limit-shopping",
+        "title": "Set a €400 monthly limit for shopping",
+        "type": "SPENDING_LIMIT",
+        "target": "SHOPPING",
+        "monthlyAmount": 400.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "spending",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "Shopping stayed at €383, under the €400 limit",
+        "stepsDone": 0
+      },
+      {
+        "actionId": "act-buffer",
+        "recommendationId": "rec-buffer",
+        "title": "Move €4,850 to your safety pot",
+        "type": "MOVE_CASH",
+        "target": "EMERGENCY",
+        "monthlyAmount": 0.0,
+        "oneOffAmount": 4850.0,
+        "trainingId": "buffer",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "€4,850 moved",
+        "stepsDone": 0
+      },
+      {
+        "actionId": "act-invest-idle",
+        "recommendationId": "rec-invest-idle",
+        "title": "Invest €11,700 a month for 12 months",
+        "type": "INVEST_MONTHLY",
+        "target": "BALANCED",
+        "monthlyAmount": 11700.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "stay-invested",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "first investment step executed",
+        "stepsDone": 3
+      },
+      {
+        "actionId": "act-protect",
+        "recommendationId": "rec-protect",
+        "title": "Check disability cover",
+        "type": "PROTECT",
+        "target": "PROTECTION",
+        "monthlyAmount": 0.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "protection",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "cover confirmed by your advisor",
+        "stepsDone": 0
+      },
+      {
+        "actionId": "act-learn",
+        "recommendationId": "rec-learn",
+        "title": "Complete a 5-minute module",
+        "type": "LEARN",
+        "target": "KNOWLEDGE",
+        "monthlyAmount": 0.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "diversification",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "module completed",
+        "stepsDone": 0
+      },
+      {
+        "actionId": "act-inheritance",
+        "recommendationId": "rec-inheritance",
+        "title": "Book an inheritance debrief",
+        "type": "ADVISOR_MEETING",
+        "target": "INHERITANCE",
+        "monthlyAmount": 0.0,
+        "oneOffAmount": 0.0,
+        "trainingId": "inheritance",
+        "status": "VERIFIED",
+        "committedIn": "2026-11",
+        "verifiedIn": "2026-12",
+        "evidence": "confirmed by your Relationship Manager",
+        "stepsDone": 0
+      }
+    ]
+  }
+}

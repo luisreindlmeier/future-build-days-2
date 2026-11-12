@@ -1,0 +1,79 @@
+{
+  "name": "Customer",
+  "age": 31,
+  "profile": "heir",
+  "purpose": "Freedom",
+  "wealth_total": 275500,
+  "cash": 225500,
+  "company_share": 0.0,
+  "monthly_income": 4200,
+  "income_note": "salary €4,200; inheritance received",
+  "monthly_spending": 3450,
+  "monthly_saving_cash": 300,
+  "monthly_saving_invested": 0,
+  "crash_reaction": "sell",
+  "disability_cover": false,
+  "will": false,
+  "has_buffer_plan": false,
+  "has_diversification_plan": false,
+  "horizon_years": 15,
+  "goals": [
+    {
+      "type": "wealth",
+      "target": 500000,
+      "priority": 1
+    },
+    {
+      "target": 75000,
+      "type": "home",
+      "priority": 2,
+      "years": 2
+    }
+  ],
+  "spending": {
+    "categories": [
+      {
+        "id": "eating_out",
+        "label": "Eating out",
+        "monthly": 585,
+        "peer_median": 226
+      },
+      {
+        "id": "shopping",
+        "label": "Shopping",
+        "monthly": 500,
+        "peer_median": 272
+      },
+      {
+        "id": "travel",
+        "label": "Travel",
+        "monthly": 375,
+        "peer_median": 309
+      },
+      {
+        "id": "subscriptions",
+        "label": "Subscriptions",
+        "monthly": 140,
+        "peer_median": 148
+      }
+    ],
+    "planned_purchases": [],
+    "subscriptions": [
+      {
+        "last_used_days": 3,
+        "name": "Streaming bundle",
+        "monthly": 28.0
+      },
+      {
+        "last_used_days": 95,
+        "name": "Wine club",
+        "monthly": 49.0
+      },
+      {
+        "last_used_days": 70,
+        "name": "Fitness studio",
+        "monthly": 89.0
+      }
+    ]
+  }
+}

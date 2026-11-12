@@ -1,0 +1,438 @@
+{
+  "intake": {
+    "name": "Max",
+    "age": 26.0,
+    "profile": "heir",
+    "purpose": "Freedom",
+    "wealth_total": 490000.0,
+    "cash": 3100.0,
+    "company_share": 0.82,
+    "monthly_income": 3000.0,
+    "income_note": "salary €3,000",
+    "monthly_spending": 2820.0,
+    "monthly_saving_cash": 180.0,
+    "monthly_saving_invested": 0.0,
+    "crash_reaction": "sell",
+    "disability_cover": false,
+    "will": false,
+    "has_buffer_plan": false,
+    "has_diversification_plan": false,
+    "buffer_amount": 400.0,
+    "invest_amount": 150.0,
+    "horizon_years": 15.0,
+    "goals": [
+      {
+        "type": "wealth",
+        "target": 1000000.0,
+        "priority": 1.0
+      }
+    ],
+    "spending": {
+      "categories": [
+        {
+          "id": "eating_out",
+          "label": "Eating out",
+          "monthly": 430.0,
+          "peer_median": 160.0
+        },
+        {
+          "id": "shopping",
+          "label": "Shopping",
+          "monthly": 380.0,
+          "peer_median": 215.0
+        },
+        {
+          "id": "travel",
+          "label": "Travel",
+          "monthly": 150.0,
+          "peer_median": 246.0
+        },
+        {
+          "id": "subscriptions",
+          "label": "Subscriptions",
+          "monthly": 200.0,
+          "peer_median": 126.0
+        }
+      ],
+      "planned_purchases": [
+        {
+          "label": "New car",
+          "amount": 38000.0,
+          "in_months": 6.0
+        }
+      ],
+      "subscriptions": [
+        {
+          "last_used_days": 74.0,
+          "name": "Gym premium",
+          "monthly": 59.0
+        },
+        {
+          "last_used_days": 2.0,
+          "name": "Streaming bundle",
+          "monthly": 28.0
+        },
+        {
+          "last_used_days": 121.0,
+          "name": "Car-sharing plus",
+          "monthly": 19.0
+        }
+      ]
+    }
+  },
+  "engine": {
+    "paths": 2000.0,
+    "horizon": "15 years",
+    "main_goal": "Build €1m of wealth by age 41",
+    "scenarios": [
+      {
+        "id": "baseline",
+        "label": "Same habits",
+        "range": "€301k – €2.91m",
+        "middle": "€778k",
+        "goal_success": "40%",
+        "risk_below_today": "27%",
+        "events": {
+          "company_shock": "45% (hit 36%)",
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "buffer",
+        "label": "Save €400 a month into a buffer",
+        "range": "€391k – €3.02m",
+        "middle": "€883k",
+        "goal_success": "45%",
+        "risk_below_today": "19%",
+        "events": {
+          "company_shock": "45% (hit 35%)",
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "invest",
+        "label": "Invest €150 a month",
+        "range": "€333k – €2.95m",
+        "middle": "€818k",
+        "goal_success": "42%",
+        "risk_below_today": "24%",
+        "events": {
+          "company_shock": "45% (hit 36%)",
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "hold_rule",
+        "label": "Hold by written rule in a crash",
+        "range": "€331k – €2.95m",
+        "middle": "€801k",
+        "goal_success": "41%",
+        "risk_below_today": "25%",
+        "events": {
+          "company_shock": "45% (hit 36%)",
+          "panic_sale": "0%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "diversify",
+        "label": "Diversify the family company shares",
+        "range": "€401k – €2.62m",
+        "middle": "€926k",
+        "goal_success": "46%",
+        "risk_below_today": "17%",
+        "events": {
+          "company_shock": "45% (hit 26%)",
+          "panic_sale": "71%",
+          "income_gap": "5%"
+        }
+      },
+      {
+        "id": "cover",
+        "label": "Get disability cover",
+        "range": "€304k – €2.91m",
+        "middle": "€779k",
+        "goal_success": "40%",
+        "risk_below_today": "27%",
+        "events": {
+          "company_shock": "45% (hit 36%)",
+          "panic_sale": "71%",
+          "income_gap": "0%"
+        }
+      },
+      {
+        "id": "full_plan",
+        "label": "Do all of the above",
+        "range": "€550k – €2.98m",
+        "middle": "€1.16m",
+        "goal_success": "59%",
+        "risk_below_today": "6%",
+        "events": {
+          "company_shock": "45% (hit 25%)",
+          "panic_sale": "0%",
+          "income_gap": "0%"
+        }
+      }
+    ]
+  },
+  "prediction_agent": {
+    "source": "fallback",
+    "headline": "Goal: Build €1m of wealth by age 41. With your current habits the chance of reaching it is 40%.",
+    "if_nothing_changes": "If nothing changes, your wealth can end between €301k – €2.91m (middle €778k), and the chance of ending below today is 27%.",
+    "future_selves": {
+      "same_habits": "With the same habits, your goal 'Build €1m of wealth by age 41' has a 40% chance.",
+      "with_changes": "With 'Do all of the above', you face the same futures with more room to decide."
+    },
+    "what_it_means": [
+      "If your income stopped tomorrow, your cash would cover 1.1 months of your bills.",
+      "In a middle future, 'Diversify the family company shares' leaves you about €148k more at 41, which is 4.4 years of your current spending.",
+      "In a middle future, 'Do all of the above' leaves you about €382k more at 41, which is 11.3 years of your current spending."
+    ],
+    "best_change": {
+      "scenario_id": "diversify",
+      "why": "Of the single changes, 'Diversify the family company shares' does most for this goal: 46% instead of 40% (+6 points).",
+      "first_step": "Book the family-table session with your advisor and your parents to agree a step-by-step plan."
+    },
+    "goals": [
+      {
+        "goal_id": "g1",
+        "best_scenario_id": "diversify",
+        "sentence": "Build €1m of wealth by age 41: 40% with same habits, 46% with 'Diversify the family company shares'."
+      }
+    ],
+    "watch_out": {
+      "event_id": "panic_sale",
+      "helped_by": "hold_rule",
+      "sentence": "A market fall of 15% or more in which you sell and miss the rebound: 71% chance with same habits. With 'Hold by written rule in a crash' it falls to 0% in the simulation."
+    },
+    "trade_off": "The best futures are less high with: Diversify the family company shares. That is the cost of spreading risk.",
+    "comparison": [
+      {
+        "scenario_id": "buffer",
+        "what_happens": "Save €400 a month into a buffer: goal 45%, below today 19%."
+      },
+      {
+        "scenario_id": "invest",
+        "what_happens": "Invest €150 a month: goal 42%, below today 24%."
+      },
+      {
+        "scenario_id": "hold_rule",
+        "what_happens": "Hold by written rule in a crash: goal 41%, below today 25%. Panic sale: 0% in the simulation."
+      },
+      {
+        "scenario_id": "diversify",
+        "what_happens": "Diversify the family company shares: goal 46%, below today 17%. Company shock: reduced."
+      },
+      {
+        "scenario_id": "cover",
+        "what_happens": "Get disability cover: goal 40%, below today 27%. Year without income: 0% in the simulation."
+      },
+      {
+        "scenario_id": "full_plan",
+        "what_happens": "Do all of the above: goal 59%, below today 6%. Company shock: reduced. Panic sale: 0% in the simulation. Year without income: 0% in the simulation."
+      }
+    ],
+    "disclaimer": "Simulated range on stated assumptions, not a promise."
+  },
+  "action_agent": {
+    "source": "fallback",
+    "intro": "Your goal: Build €1m of wealth by age 41, 40% chance today. The quick wins free €308 a month and set aside €400 a month. Quick wins first, then one advisor conversation.",
+    "actions": [
+      {
+        "action_id": "start_buffer",
+        "bucket": "this_week",
+        "title": "Start a buffer: €400 a month",
+        "why": "Buffer today: 1.1 months of spending. Effect on your goal: +5 points. That is €72k saved over 15 years (buffer first, then investments).",
+        "how": "Confirm the prepared standing order: €400 on the 1st of each month into a new emergency pot. Once it covers 3 months of spending (after about 14 months), the €400 goes to your investments instead.",
+        "verified_by": "Bank data: the standing order ran",
+        "effort": "2 minutes",
+        "impact": {
+          "scenario_id": "buffer",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "45%",
+          "main_goal_change": "+5 points",
+          "risk_below_today_change": "-8 points",
+          "money_kind": "set_aside",
+          "monthly": "€400",
+          "buffer_full_after": "14 months",
+          "buffer_target": "3 months of spending",
+          "per_year": "€4,800 a year",
+          "over_horizon": "€72k saved over 15 years (buffer first, then investments)",
+          "effect_label": "goal +5 points"
+        }
+      },
+      {
+        "action_id": "pause_purchase",
+        "bucket": "this_week",
+        "title": "Put the new car on hold",
+        "why": "New car: €38,000 planned in 6 months. Buying now would lower your goal chance to 36%; waiting keeps it at 40%.",
+        "how": "Wait until your buffer covers 3 months of spending, and talk it through with your advisor before signing a loan.",
+        "verified_by": "Bank data: no loan contract and a buffer above 3 months",
+        "effort": "one decision",
+        "impact": {
+          "scenario_id": "pause_purchase",
+          "main_goal_chance_if_bought_now": "36%",
+          "main_goal_chance_if_paused": "40%",
+          "main_goal_change": "+4 points",
+          "effect_label": "keeps 4 points (avoids −4 points)"
+        }
+      },
+      {
+        "action_id": "limit_eating_out",
+        "bucket": "this_week",
+        "title": "Set a €200 monthly limit for eating out",
+        "why": "Eating out: €430 a month, people like you spend about €160. Effect on your goal: +3 points. That is €41k freed over 15 years.",
+        "how": "Set a €200 limit in the app. You get a nudge at 80% of it, and whatever you do not spend under the limit moves into your savings.",
+        "verified_by": "Bank data: two months at or below the limit",
+        "effort": "10 minutes",
+        "impact": {
+          "scenario_id": "limit_eating_out",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "43%",
+          "main_goal_change": "+3 points",
+          "risk_below_today_change": "-5 points",
+          "money_kind": "freed",
+          "monthly": "€230",
+          "per_year": "€2,760 a year",
+          "over_horizon": "€41k freed over 15 years",
+          "effect_label": "goal +3 points"
+        }
+      },
+      {
+        "action_id": "cancel_unused_subscriptions",
+        "bucket": "this_week",
+        "title": "Cancel what you no longer use (€78 a month)",
+        "why": "You pay €78 a month for Gym premium and Car-sharing plus, which you no longer use. It protects you rather than clearly raising the goal chance. That is €14k freed over 15 years.",
+        "how": "Cancel Gym premium and Car-sharing plus in the app's subscription view. The freed €78 a month moves into your savings automatically.",
+        "verified_by": "Bank data: the payments stop",
+        "effort": "5 minutes",
+        "impact": {
+          "scenario_id": "cancel_unused_subscriptions",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "41%",
+          "main_goal_change": "no clear change",
+          "risk_below_today_change": "no clear change",
+          "money_kind": "freed",
+          "monthly": "€78",
+          "per_year": "€936 a year",
+          "over_horizon": "€14k freed over 15 years",
+          "effect_label": "protects"
+        }
+      },
+      {
+        "action_id": "write_will",
+        "bucket": "this_month",
+        "title": "Write your will with the guided checklist",
+        "why": "€402k of family company shares would pass on without a will. It protects you rather than clearly raising the goal chance.",
+        "how": "Answer the 12-question checklist in the app, then book a notary and upload the signed will.",
+        "verified_by": "Document: signed will uploaded",
+        "effort": "about 20 minutes, then a notary",
+        "impact": {
+          "scenario_id": "write_will",
+          "main_goal_change": "no clear change",
+          "protects": "€402k of family company shares",
+          "effect_label": "protects"
+        }
+      },
+      {
+        "action_id": "family_diversification_plan",
+        "bucket": "with_your_advisor",
+        "title": "Agree a step-by-step plan to lower your single-company share",
+        "why": "82% of your wealth is in the family company shares. Effect on your goal: +6 points.",
+        "how": "Book the family-table session with your advisor and your parents to agree a step-by-step plan.",
+        "verified_by": "Advisor confirmed: plan agreed and first step taken",
+        "effort": "one session with your family",
+        "impact": {
+          "scenario_id": "diversify",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "46%",
+          "main_goal_change": "+6 points",
+          "risk_below_today_change": "-10 points",
+          "risks": [
+            {
+              "event_id": "company_shock",
+              "label": "The family company loses 40% or more in a single year",
+              "short": "company shock",
+              "status": "reduced",
+              "chance_same_habits": "45%",
+              "chance_here": "45%",
+              "typical_hit_same_habits": "36% of your total wealth in that year",
+              "typical_hit_here": "26% of your total wealth in that year"
+            }
+          ],
+          "company_shock_hit_now": "36% of your total wealth in that year",
+          "company_shock_hit_after": "26% of your total wealth in that year",
+          "effect_label": "goal +6 points"
+        }
+      },
+      {
+        "action_id": "write_crash_rules",
+        "bucket": "with_your_advisor",
+        "title": "Write down your rules for falling markets",
+        "why": "You sold everything in the crash test. It protects you rather than clearly raising the goal chance.",
+        "how": "Write down your rules for a falling market with your advisor, then practise them in the crash review.",
+        "verified_by": "Advisor confirmed, then passed again in the crash review",
+        "effort": "part of the advisor meeting",
+        "impact": {
+          "scenario_id": "hold_rule",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "41%",
+          "main_goal_change": "no clear change",
+          "risk_below_today_change": "-2 points",
+          "risks": [
+            {
+              "event_id": "panic_sale",
+              "label": "A market fall of 15% or more in which you sell and miss the rebound",
+              "short": "panic sale",
+              "status": "removed",
+              "chance_same_habits": "71%",
+              "chance_here": "0%",
+              "note": "71% to 0% in the simulation"
+            }
+          ],
+          "event": {
+            "id": "panic_sale",
+            "label": "A market fall of 15% or more in which you sell and miss the rebound",
+            "status": "removed",
+            "chance_now": "71%",
+            "chance_after": "0%"
+          },
+          "effect_label": "protects"
+        }
+      },
+      {
+        "action_id": "save_more_tomorrow",
+        "bucket": "with_your_advisor",
+        "title": "Agree a monthly investment plan of about €150",
+        "why": "You save €180 a month, 6% of income. Effect on your goal: +2 points. That is €27k saved over 15 years.",
+        "how": "Confirm the save-more-tomorrow commitment: half of your next raise goes into your monthly investment plan.",
+        "verified_by": "Bank data: the plan received its first payment",
+        "effort": "part of the advisor meeting",
+        "impact": {
+          "scenario_id": "invest",
+          "main_goal_chance_now": "40%",
+          "main_goal_chance_after": "42%",
+          "main_goal_change": "+2 points",
+          "risk_below_today_change": "-3 points",
+          "money_kind": "set_aside",
+          "monthly": "€150",
+          "per_year": "€1,800 a year",
+          "over_horizon": "€27k saved over 15 years",
+          "effect_label": "goal +2 points"
+        }
+      }
+    ],
+    "advisor_meeting": {
+      "topics": [
+        "family_diversification_plan",
+        "write_crash_rules",
+        "save_more_tomorrow"
+      ],
+      "sentence": "One meeting with your advisor covers: agree a step-by-step plan to lower your single-company share; write down your rules for falling markets; agree a monthly investment plan of about €150."
+    },
+    "disclaimer": "Educational guidance, not investment advice. Decisions about investments are made with your advisor after a suitability check."
+  }
+}
